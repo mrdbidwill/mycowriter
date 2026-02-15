@@ -9,6 +9,29 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
+  # Glossary routes
+  get "glossary/definition", to: "glossary#definition"
+  get "glossary", to: "glossary#index"
+
+  # Books (main editing interface)
+  resources :books do
+    resources :sections, only: [:create, :update, :destroy] do
+      member do
+        patch :move_up
+        patch :move_down
+      end
+      resources :paragraphs, only: [:create, :update, :destroy] do
+        member do
+          patch :move_up
+          patch :move_down
+        end
+      end
+    end
+  end
+
+  # Autocomplete endpoint for mb_lists
+  get "autocomplete/taxa", to: "autocomplete#taxa"
+
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "books#index"
 end

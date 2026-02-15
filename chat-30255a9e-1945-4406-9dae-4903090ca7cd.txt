@@ -1,0 +1,507 @@
+Chat 'ChatTitle(text=Mycology Editor Development Recommendations, isCustom=true)' (30255a9e-1945-4406-9dae-4903090ca7cd)
+Messages: 10
+========================================================================================================================
+
+==== UserMessageImpl #1 ====
+User: 
+The success of auto-glossary has inspired me to create a mycology focused editor that will use the auto-glossary code from Wikipedia Glossary of Mycology and parts of mrdbid related to articles and mb_lists to prefill genus and species names while typing. The editor will have a 'book' unit that contains sections containing paragraphs. The user can auto apply html codes such as the current list in mrdbid's html list in addition to p, ol, ul, and li. The section and paragraphs can be edited, deleted, and rearranged as needed. The entire program will have it's own GitHub repository and web domain on hostinger added to existing VPS. It should use the same deployment process as the auto-glossary and mrdbid, as stated in the various guides in the root directory of the old projects. The project will be open source like the other with all transparency disclosures. I have not yet decided on a name, what do you suggest? Once that is decided, I will create the new rails project and move over to it. Other than a name, give me you recommendations for the complete setup and features.
+
+kotlin.Unit
+
+==== AgentMessage #2 ====
+Assistant: 
+I'll analyze the existing projects to understand the architecture and features, then provide recommendations for your new mycology-focused editor.<llm-progress-log-group></llm-progress-log-group>Now I have a good understanding of the existing projects. Let me gather information about the Wikipedia Glossary of Mycology to understand the data source:<llm-progress-log-group></llm-progress-log-group>Perfect! Now I have a comprehensive understanding of your existing projects. Let me compile recommendations for your mycology-focused editor project.<llm-progress-log-group></llm-progress-log-group>Great! I've provided comprehensive recommendations for your new mycology-focused editor project. Here's a summary of what I've proposed:
+
+## Key Recommendations:
+
+**Project Name:** MycoWriter (my top suggestion - combines mycology + writer)
+
+**Core Architecture:**
+- Book → Section → Paragraph hierarchy
+- Auto-glossary integration from auto-glossary project
+- Genus/species autocomplete using mb_lists data from mrdbid
+- Rich HTML formatting toolbar (bold, italic, lists, etc.)
+- Drag-and-drop reordering of sections and paragraphs
+
+**Tech Stack:**
+- Rails 8.0.2 + Ruby 3.4.3
+- MySQL (for mb_lists taxonomy data)
+- Tailwind CSS + Stimulus JS
+- Same deployment process as your existing projects
+
+**Key Features:**
+- Inline paragraph editing with auto-save
+- Wikipedia mycology glossary integration
+- Scientific name autocomplete from MBList
+- Export to PDF, HTML, Markdown, and plain text
+- Mobile-responsive design
+
+**Deployment:**
+- Same Hostinger VPS alongside mrdbid and auto-glossary
+- Capistrano deployment
+- Puma + systemd + Nginx
+- Let's Encrypt SSL
+
+**Open Source:**
+- MIT license (consistent with other projects)
+- Full transparency disclosures for AI assistance
+- GitHub public repository
+
+The plan leverages your proven architecture from both existing projects while adding focused mycology writing capabilities. Once you decide on a name and create the Rails project, we can begin porting the reusable components and building the editor features.
+
+What name would you like to use for the project?
+
+Tool use list:
+  Read (toolu_01AckwxkSk3cLePxfKYYamUz, COMPLETED, NOT_REQUESTED): README.md
+  Glob (toolu_01LTBHakTo6CRLQEmZPoYZSa, COMPLETED, NOT_REQUESTED): Finding files matching '**/DEPLOYMENT*.md'
+  Glob (toolu_01SDnGkYmxgjCo9ggHXs8S1K, COMPLETED, NOT_REQUESTED): Finding files matching '**/*guide*.md'
+  list_directory_tree (toolu_019iFHndSsknCFmcxL55br52, COMPLETED, NOT_REQUESTED): auto-glossary
+  Read (toolu_01DiYgQtu6psuujZo9zffKE3, COMPLETED, NOT_REQUESTED): DEPLOYMENT.md
+  Bash (toolu_015xHp9kJcfyWSWHpXZNsMx1, COMPLETED, APPROVED): Bash command: find /Users/wrj/Documents/www/public_html -maxdepth 2 -name "mrdbid" -type d 2>/dev/null
+  Read (toolu_019qZniHcB5wc84mxP8uPSU6, COMPLETED, APPROVED): README.md
+  Bash (toolu_01GPQeZqgPbKMyXBSjcR2RFY, COMPLETED, APPROVED): Bash command: find /Users/wrj/Documents/www/public_html/mrdbid -name "*html*" -o -name "*formatting*" | head -20
+  Bash (toolu_013WSBWopufZ7hqHqEziaQBi, COMPLETED, APPROVED): Bash command: find /Users/wrj/Documents/www/public_html/mrdbid/app/models -name "mb_list.rb" -o -name "article.rb" | head -5
+  Read (toolu_01KHgJS3619bAse3FPLNuv96, COMPLETED, APPROVED): article.rb
+  Read (toolu_01BWTEGN2sYpe99vBMTRiGsp, COMPLETED, APPROVED): mb_list.rb
+  Bash (toolu_01ThYLvqcquUmfSpRuvc6qfn, COMPLETED, APPROVED): Bash command: find /Users/wrj/Documents/www/public_html/mrdbid -name "*helper*" -type f | grep -E "(helper\.rb|_helper\.rb)" | head -10
+  Bash (toolu_018yc6xEzwo7MFK8Eco5Zf5Q, COMPLETED, APPROVED): Bash command: find /Users/wrj/Documents/www/public_html/mrdbid/app/helpers -name "application_helper.rb"
+  Read (toolu_015y6Ja9Upw4fMsQ5Chasf7N, COMPLETED, APPROVED): application_helper.rb
+  Grep (toolu_01QYgRsrmXM86Nsu6Djp6SYR, COMPLETED, NOT_REQUESTED): Searching for 'def.*format|HTML|sanitize'
+  Read (toolu_01MKBYbsJLKCz9BXRfiTC3Gw, COMPLETED, APPROVED): glossary_helper.rb
+  Bash (toolu_012LhTLizA6WMmeNJMqYKmCc, COMPLETED, APPROVED): Bash command: find /Users/wrj/Documents/www/public_html/mrdbid/app/views -name "*article*" -type f | head -5
+  Bash (toolu_01DLowHrGB1JHn44mHRwQRuM, COMPLETED, APPROVED): Bash command: ls /Users/wrj/Documents/www/public_html/mrdbid/app/views/articles 2>/dev/null || echo "No articles directory"
+  Read (toolu_01JgKS4VTe28qdH54mvWhLCV, COMPLETED, APPROVED): show.html.erb
+  Bash (toolu_01YAyimfXKy6sQVnnKJLnvQu, COMPLETED, APPROVED): Bash command: grep -r "bold\|italic\|underline" /Users/wrj/Documents/www/public_html/mrdbid/app/views/articles/ 2>/dev/null | head -5
+  Read (toolu_013woHuXmR7tcBDH3NfDvjRm, COMPLETED, NOT_REQUESTED): wikipedia_glossary_service.rb
+  Glob (toolu_01V7qpxG5qrgS4d1g6jQne2Q, COMPLETED, NOT_REQUESTED): Finding files matching '**/*puma*.rb'
+  Read (toolu_01QN4Crr82Frv1cSizFFHMg9, COMPLETED, NOT_REQUESTED): puma.rb
+  Read (toolu_01F6QibWDDPT2wC24YxcemuS, COMPLETED, NOT_REQUESTED): deploy.rb
+  ExitPlanMode (toolu_01UyhhzjXx8JF3az1SGxtFvr, COMPLETED, APPROVED): Plan created
+  Plan:
+    <html>
+     <head></head>
+     <body>
+      <h1>Mycology-Focused Editor Project - Recommendations</h1>
+      <h2>Suggested Project Names</h2>
+      <p>Based on your requirements, here are my top recommendations:</p>
+      <ol>
+       <li><strong>MushroomScribe</strong> - Clear, memorable, emphasizes writing about mushrooms</li>
+       <li><strong>MycoWriter</strong> - Combines mycology + writer, follows your "Myco*" naming pattern</li>
+       <li><strong>FungalText</strong> - Scientific yet accessible</li>
+       <li><strong>SporoWrite</strong> - References spores, unique and memorable</li>
+       <li><strong>HyphaEditor</strong> - References mycelial structure, suggests interconnected writing</li>
+      </ol>
+      <p><strong>My recommendation: MycoWriter</strong> - It's concise, professional, SEO-friendly, and aligns with your existing mycology focus.</p>
+      <h2>Complete Feature Set &amp; Architecture</h2>
+      <h3>Core Features</h3>
+      <p><strong>1. Document Structure (Book → Section → Paragraph)</strong></p>
+      <ul>
+       <li>Book model: <code>has_many :sections</code> (with position ordering)</li>
+       <li>Section model: <code>belongs_to :book, has_many :paragraphs</code> (with position ordering)</li>
+       <li>Paragraph model: <code>belongs_to :section</code> (stores content + HTML formatting)</li>
+       <li>Drag-and-drop reordering using Stimulus + Sortable.js</li>
+       <li>Inline editing with auto-save (debounced)</li>
+      </ul>
+      <p><strong>2. Rich Text Formatting</strong></p>
+      <ul>
+       <li>HTML tags from mrdbid: <code>&lt;b&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;u&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;pre&gt;</code>, <code>&lt;sup&gt;</code>, <code>&lt;sub&gt;</code></li>
+       <li>Additional tags: <code>&lt;p&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;hr&gt;</code></li>
+       <li>Toolbar with click-to-apply formatting (no WYSIWYG editor needed)</li>
+       <li>Sanitization using Rails ActionText or custom sanitizer</li>
+      </ul>
+      <p><strong>3. Auto-Glossary Integration</strong></p>
+      <ul>
+       <li>Copy <code>WikipediaGlossaryService</code> from auto-glossary</li>
+       <li>Copy <code>GlossaryHelper</code> and Stimulus controller</li>
+       <li>Apply glossary terms to paragraphs in real-time preview</li>
+       <li>Fetch from Wikipedia Glossary of Mycology</li>
+      </ul>
+      <p><strong>4. Genus/Species Autocomplete</strong></p>
+      <ul>
+       <li>Service class to query <code>mb_lists</code> table from mrdbid data</li>
+       <li>Stimulus autocomplete controller (use Stimulus Autocomplete or build custom)</li>
+       <li>Triggered by typing capital letter or "@" symbol</li>
+       <li>Shows scientific names in italics automatically</li>
+       <li>Cache frequent searches</li>
+      </ul>
+      <p><strong>5. Export Features</strong></p>
+      <ul>
+       <li>PDF export (using Prawn gem, similar to mrdbid)</li>
+       <li>HTML export (clean, standalone document)</li>
+       <li>Markdown export (for portability)</li>
+       <li>Plain text export</li>
+      </ul>
+      <h3>Tech Stack</h3>
+      <p><strong>Backend:</strong></p>
+      <ul>
+       <li>Ruby 3.4.3</li>
+       <li>Rails 8.0.2</li>
+       <li>MySQL 8.0+ (store mb_lists data)</li>
+       <li>Rails.cache for glossary caching (24 hours)</li>
+      </ul>
+      <p><strong>Frontend:</strong></p>
+      <ul>
+       <li>Tailwind CSS 3.4 (consistent with auto-glossary/mrdbid)</li>
+       <li>Stimulus JS (Hotwire)</li>
+       <li>Turbo for seamless navigation</li>
+       <li>Sortable.js for drag-and-drop</li>
+      </ul>
+      <p><strong>Deployment:</strong></p>
+      <ul>
+       <li>Capistrano (same setup as auto-glossary/mrdbid)</li>
+       <li>Puma with systemd + Unix socket</li>
+       <li>Nginx reverse proxy</li>
+       <li>Let's Encrypt SSL</li>
+       <li>Same Hostinger VPS (85.31.233.192)</li>
+      </ul>
+      <h3>Database Schema</h3>
+      <pre><code class="language-ruby"># books table
+    - id (bigint)
+    - user_id (bigint, foreign key)
+    - title (string)
+    - description (text)
+    - created_at, updated_at
+    - published (boolean, default: false)
+    - published_at (datetime)
+    
+    # sections table
+    - id (bigint)
+    - book_id (bigint, foreign key)
+    - title (string)
+    - position (integer, for ordering)
+    - created_at, updated_at
+    
+    # paragraphs table
+    - id (bigint)
+    - section_id (bigint, foreign key)
+    - content (text, sanitized HTML)
+    - position (integer)
+    - created_at, updated_at
+    
+    # mb_lists table (import from mrdbid)
+    - id (bigint)
+    - taxon_name (string)
+    - rank (string)
+    - ... (other taxonomic fields)
+    
+    # users table (Devise)
+    - id, email, encrypted_password
+    - ... (standard Devise fields)
+    </code></pre>
+      <h3>File Structure</h3>
+      <pre><code>app/
+    ├── controllers/
+    │   ├── books_controller.rb
+    │   ├── sections_controller.rb
+    │   ├── paragraphs_controller.rb
+    │   ├── glossary_controller.rb
+    │   └── autocomplete_controller.rb
+    ├── models/
+    │   ├── book.rb
+    │   ├── section.rb
+    │   ├── paragraph.rb
+    │   ├── mb_list.rb
+    │   └── user.rb
+    ├── services/
+    │   ├── wikipedia_glossary_service.rb
+    │   ├── mb_list_search_service.rb
+    │   └── export/
+    │       ├── pdf_exporter.rb
+    │       ├── html_exporter.rb
+    │       └── markdown_exporter.rb
+    ├── helpers/
+    │   ├── glossary_helper.rb
+    │   ├── formatting_helper.rb
+    │   └── taxonomy_helper.rb
+    ├── javascript/controllers/
+    │   ├── glossary_controller.js
+    │   ├── autocomplete_controller.js
+    │   ├── sortable_controller.js
+    │   ├── paragraph_editor_controller.js
+    │   └── formatting_toolbar_controller.js
+    └── views/
+        ├── books/
+        ├── sections/
+        └── paragraphs/
+    </code></pre>
+      <h3>Setup Process</h3>
+      <ol>
+       <li><strong>Create new Rails app</strong> - You'll create this with standard Rails 8 setup</li>
+       <li><strong>Copy reusable components:</strong>
+        <ul>
+         <li>Glossary system from auto-glossary (service, helper, controller, JS)</li>
+         <li>MbList model and data from mrdbid</li>
+         <li>Deployment configuration (Capfile, deploy.rb, puma.rb)</li>
+        </ul></li>
+       <li><strong>Generate new models:</strong> Book, Section, Paragraph</li>
+       <li><strong>Import mb_lists data</strong> - SQL dump from mrdbid (380MB MBList table)</li>
+       <li><strong>Build editor UI</strong> - Stimulus-driven, mobile-responsive</li>
+       <li><strong>Configure deployment</strong> - New subdomain on existing VPS</li>
+      </ol>
+      <h3>Open Source &amp; Transparency</h3>
+      <p><strong>Same MIT license as auto-glossary/mrdbid:</strong></p>
+      <ul>
+       <li>GitHub repository (public)</li>
+       <li>README with AI disclosure</li>
+       <li>DEPLOYMENT.md guide</li>
+       <li>Clear attribution:
+        <ul>
+         <li>Wikipedia Glossary of Mycology (CC BY-SA 4.0)</li>
+         <li>MBList database credit</li>
+         <li>JetBrains RubyMine + Claude Code disclosure</li>
+        </ul></li>
+      </ul>
+      <h3>Deployment Architecture</h3>
+      <p><strong>Domain:</strong> <code>mycowriter.com</code> (or chosen name)
+       <br>
+       <strong>Server:</strong> Same VPS as mrdbid.com and auto-glossary.com
+       <br>
+       <strong>Path:</strong> <code>/opt/mycowriter</code>
+       <br>
+       <strong>Database:</strong> <code>mycowriter_production</code>
+       <br>
+       <strong>Puma service:</strong> <code>puma_mycowriter.service</code>
+       <br>
+       <strong>Nginx:</strong> New virtual host alongside existing sites</p>
+      <h3>Recommended Next Steps</h3>
+      <ol>
+       <li><strong>Decide on name</strong> - Choose from suggestions or propose alternative</li>
+       <li><strong>Create new Rails 8 app</strong> - <code>rails new [project-name] --database=mysql --css=tailwind</code></li>
+       <li><strong>Set up GitHub repo</strong> - Public repository</li>
+       <li><strong>Port components</strong> - Copy glossary system, mb_lists data, deployment config</li>
+       <li><strong>Build core models</strong> - Book, Section, Paragraph with associations</li>
+       <li><strong>Implement editor UI</strong> - Start with basic CRUD, add rich features iteratively</li>
+       <li><strong>Configure deployment</strong> - DNS, Nginx, systemd service</li>
+       <li><strong>Deploy to production</strong> - Using same Capistrano process</li>
+      </ol>
+      <p>This approach leverages your proven architecture while adding focused mycology writing tools.</p>
+     </body>
+    </html>
+  
+
+
+kotlin.Unit
+
+==== UserMessageImpl #3 ====
+User: 
+I just purchased mycowriter.com.
+
+kotlin.Unit
+
+==== AgentMessage #4 ====
+Assistant: 
+Perfect! MycoWriter it is. Now you can create the new Rails project. Here are the exact commands to run:
+
+```bash
+# Navigate to your projects directory
+cd /Users/wrj/Documents/www/public_html
+
+# Create new Rails 8 app with MySQL and Tailwind
+rails new mycowriter --database=mysql --css=tailwind
+
+# Navigate into the new project
+cd mycowriter
+
+# Initialize git repository
+git init
+git add .
+git commit -m "Initial Rails 8 app with MySQL and Tailwind"
+
+# Create GitHub repository and push
+# (You'll need to create the repo on GitHub first at github.com/mrdbidwill/mycowriter)
+git remote add origin git@github.com:mrdbidwill/mycowriter.git
+git branch -M main
+git push -u origin main
+```
+
+Once you've created the Rails app and pushed it to GitHub, let me know and I can help you:
+
+1. Copy the glossary system from auto-glossary
+2. Import the mb_lists table structure from mrdbid
+3. Set up the Book/Section/Paragraph models
+4. Configure deployment files (Capfile, deploy.rb, puma.rb)
+5. Build the editor interface
+
+Would you like me to wait for you to create the Rails app, or would you like me to provide you with a complete setup script you can review and run?
+
+Tool use list:
+
+
+kotlin.Unit
+
+==== UserMessageImpl #5 ====
+User: 
+This happened last time, also. I thought I had marked 'NO' on README.md, but I guess I didn't. wrj@Williams-iMac mycowriter % git push -u origin main
+                                                                                               To github.com:mrdbidwill/mycowriter.git
+                                                                                                ! [rejected]        main -> main (fetch first)
+                                                                                               error: failed to push some refs to 'github.com:mrdbidwill/mycowriter.git'
+                                                                                               hint: Updates were rejected because the remote contains work that you do not
+                                                                                               hint: have locally. This is usually caused by another repository pushing to
+                                                                                               hint: the same ref. If you want to integrate the remote changes, use
+                                                                                               hint: 'git pull' before pushing again.
+                                                                                               hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+                                                                                               wrj@Williams-iMac mycowriter % 
+Attachments:
+Attachment Name: Console Selection
+Attachments Kind: Visible
+Attachments Source: Other / SelectionChatAttachment
+Attachments Text:
+git push -u origin main
+
+
+kotlin.Unit
+
+==== AgentMessage #6 ====
+Assistant: 
+GitHub created a README.md when you set up the repository. Let's fix this by pulling and merging:
+
+```bash
+cd /Users/wrj/Documents/www/public_html/mycowriter
+
+# Pull the remote README.md and merge it
+git pull origin main --allow-unrelated-histories
+
+# Now push your local code
+git push -u origin main
+```
+
+If you get a merge conflict on README.md, you can resolve it by keeping your local version or manually editing it. After running these commands, everything should be synced up.
+
+Tool use list:
+
+
+kotlin.Unit
+
+==== UserMessageImpl #7 ====
+User: 
+wrj@Williams-iMac mycowriter % git pull origin main --allow-unrelated-histories
+
+# Now push your local code
+git push -u origin main
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.45 KiB | 371.00 KiB/s, done.
+From github.com:mrdbidwill/mycowriter
+ * branch            main       -> FETCH_HEAD
+ * [new branch]      main       -> origin/main
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands sometime before
+hint: your next pull:
+hint:
+hint:   git config pull.rebase false  # merge
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint:
+hint: You can replace "git config" with "git config --global" to set a default
+hint: preference for all repositories. You can also pass --rebase, --no-rebase,
+hint: or --ff-only on the command line to override the configured default per
+hint: invocation.
+fatal: Need to specify how to reconcile divergent branches.
+zsh: command not found: #
+To github.com:mrdbidwill/mycowriter.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:mrdbidwill/mycowriter.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+wrj@Williams-iMac mycowriter % 
+Attachments:
+Attachment Name: Console Selection
+Attachments Kind: Visible
+Attachments Source: Other / SelectionChatAttachment
+Attachments Text:
+git pull origin main --allow-unrelated-histories
+
+# Now push your local code
+git push -u origin main
+
+
+kotlin.Unit
+
+==== AgentMessage #8 ====
+Assistant: 
+Let's specify the merge strategy and complete the sync:
+
+```bash
+cd /Users/wrj/Documents/www/public_html/mycowriter
+
+# Configure to use merge strategy and pull
+git config pull.rebase false
+git pull origin main --allow-unrelated-histories
+
+# This will open an editor for merge commit message - save and exit
+# If it opens vim: press ESC, then type :wq and press ENTER
+
+# Now push
+git push -u origin main
+```
+
+This will merge GitHub's README.md with your local Rails app files, then push everything up.
+
+Tool use list:
+
+
+kotlin.Unit
+
+==== UserMessageImpl #9 ====
+User: 
+??? wrj@Williams-iMac mycowriter % git pull origin main --allow-unrelated-histories
+    From github.com:mrdbidwill/mycowriter
+     * branch            main       -> FETCH_HEAD
+    hint: Waiting for your editor to close the file... 
+      File: /Users/wrj/Documents/www/public_html/mycowriter/.git/MERGE_MSG          
+    
+    Merge branch 'main' of github.com:mrdbidwill/mycowriter
+    # Please enter a commit message to explain why this merge is necessary,
+    # especially if it merges an updated upstream into a topic branch.
+    #
+    # Lines starting with '#' will be ignored, and an empty message aborts
+    # the commit.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ^G Get Help  ^O WriteOut  ^R Read File ^Y Prev Pg   ^K Cut Text  ^C Cur Pos   
+    ^X Exit      ^J Justify   ^W Where is  ^V Next Pg   ^U UnCut Text^T To Spell  
+
+Attachments:
+Attachment Name: Console Selection
+Attachments Kind: Visible
+Attachments Source: Other / SelectionChatAttachment
+Attachments Text:
+git pull origin main --allow-unrelated-histories
+
+
+kotlin.Unit
+
+==== AgentMessage #10 ====
+Assistant: 
+The nano editor opened for the merge commit message. The default message is fine. Just save and exit:
+
+Press `Ctrl+O` (WriteOut) then `ENTER` to save, then `Ctrl+X` (Exit) to close the editor.
+
+After that, run:
+```bash
+git push -u origin main
+```
+
+This should complete the sync successfully.
+
+Tool use list:
+
+
+kotlin.Unit
+
