@@ -36,9 +36,7 @@ if ENV['RAILS_ENV'] == 'production'
   pidfile ENV['PUMA_PID'] || '/opt/mycowriter/shared/tmp/pids/puma.pid'
   state_path ENV['PUMA_STATE'] || '/opt/mycowriter/shared/tmp/pids/puma.state'
 
-  # Logging - redirects stdout/stderr to log files
-  stdout_redirect ENV['PUMA_STDOUT'] || '/opt/mycowriter/shared/log/puma_stdout.log',
-                  ENV['PUMA_STDERR'] || '/opt/mycowriter/shared/log/puma_stderr.log', true
+  # Logging is handled by systemd - no need to redirect here
 else
   # Use TCP port in development
   port ENV.fetch("PORT", 3000)
