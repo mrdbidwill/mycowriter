@@ -1,4 +1,5 @@
-class Book < ApplicationRecord
+class Article < ApplicationRecord
+  belongs_to :user, optional: true  # Made optional temporarily for existing records
   has_many :sections, -> { order(position: :asc) }, dependent: :destroy
 
   validates :title, presence: true

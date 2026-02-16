@@ -1,16 +1,16 @@
 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <div class="mb-8">
-    <%= link_to books_path, class: "inline-flex items-center text-sm text-gray-500 hover:text-gray-700" do %>
+    <%= link_to articles_path, class: "inline-flex items-center text-sm text-gray-500 hover:text-gray-700" do %>
       <svg class="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
-      Back to Books
+      Back to Articles
     <% end %>
   </div>
 
   <div class="bg-white shadow sm:rounded-lg">
     <div class="px-4 py-5 sm:p-6">
-      <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Book</h1>
+      <h1 class="text-2xl font-bold text-gray-900 mb-6">Create New Article</h1>
 
       <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
         <div class="flex">
@@ -28,8 +28,8 @@
         </div>
       </div>
 
-      <%= form_with(model: @book, local: true, class: "space-y-6") do |form| %>
-        <% if @book.errors.any? %>
+      <%= form_with(model: @article, local: true, class: "space-y-6") do |form| %>
+        <% if @article.errors.any? %>
           <div class="rounded-md bg-red-50 p-4">
             <div class="flex">
               <div class="flex-shrink-0">
@@ -39,11 +39,11 @@
               </div>
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-red-800">
-                  <%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:
+                  <%= pluralize(@article.errors.count, "error") %> prohibited this book from being saved:
                 </h3>
                 <div class="mt-2 text-sm text-red-700">
                   <ul class="list-disc pl-5 space-y-1">
-                    <% @book.errors.full_messages.each do |message| %>
+                    <% @article.errors.full_messages.each do |message| %>
                       <li><%= message %></li>
                     <% end %>
                   </ul>
@@ -68,8 +68,8 @@
         </div>
 
         <div class="flex items-center justify-end space-x-3 pt-4">
-          <%= link_to "Cancel", books_path, class: "inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-          <%= form.submit "Create Book", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= link_to "Cancel", articles_path, class: "inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          <%= form.submit "Create Article", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
         </div>
       <% end %>
     </div>

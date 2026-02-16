@@ -1,0 +1,83 @@
+<div class="max-w-4xl mx-auto">
+  <h1 class="text-3xl font-bold text-gray-900 mb-6">Terms of Service</h1>
+
+  <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">1. Content Ownership</h2>
+      <p class="text-gray-700">
+        You retain all rights to the content you create on MycoWriter, including books, sections, paragraphs, and any other materials you submit. By using this service, you grant MycoWriter a license to display, store, and backup your content solely for the purpose of providing the service.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">2. User Responsibilities</h2>
+      <p class="text-gray-700">
+        Users are responsible for:
+      </p>
+      <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+        <li>Maintaining the security of their account credentials</li>
+        <li>All content posted under their account</li>
+        <li>Ensuring their content does not infringe on others' rights</li>
+        <li>Following applicable laws and regulations</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">3. Public Content</h2>
+      <p class="text-gray-700">
+        All books created on MycoWriter are publicly viewable by all users. Do not post sensitive, private, or confidential information. Only book owners can edit or delete their books.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">4. Mushroom Identification Disclaimer</h2>
+      <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4">
+        <p class="text-yellow-800 font-semibold">
+          <strong>IMPORTANT:</strong> MycoWriter is for educational and organizational purposes only. Never consume mushrooms based solely on information from this or any online resource. Always consult with certified mycologists and use multiple authoritative sources before consuming any wild mushrooms. Mushroom poisoning can be fatal.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">5. Service Availability</h2>
+      <p class="text-gray-700">
+        MycoWriter is provided "as is" without warranties. We reserve the right to modify, suspend, or discontinue the service at any time. We recommend users maintain their own backups of important content.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">6. Prohibited Content</h2>
+      <p class="text-gray-700">
+        Users may not post content that:
+      </p>
+      <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+        <li>Violates any applicable laws</li>
+        <li>Infringes on intellectual property rights</li>
+        <li>Contains harmful, abusive, or offensive material</li>
+        <li>Promotes illegal activities</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">7. Account Termination</h2>
+      <p class="text-gray-700">
+        We reserve the right to suspend or terminate accounts that violate these terms. Users may delete their accounts at any time, which will also delete all associated content.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-3">8. Changes to Terms</h2>
+      <p class="text-gray-700">
+        We may update these terms from time to time. Continued use of the service after changes constitutes acceptance of the updated terms.
+      </p>
+    </section>
+
+    <section class="text-sm text-gray-600 mt-8 pt-4 border-t">
+      <p>Last updated: <%= Date.today.strftime("%B %d, %Y") %></p>
+    </section>
+  </div>
+
+  <div class="mt-6">
+    <%= link_to "Back to Home", root_path, class: "text-blue-600 hover:text-blue-800 underline" %>
+  </div>
+</div>

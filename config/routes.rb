@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "pages/contact"
+  get "pages/terms_of_service"
+  devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -13,8 +16,8 @@ Rails.application.routes.draw do
   get "glossary/definition", to: "glossary#definition"
   get "glossary", to: "glossary#index"
 
-  # Books (main editing interface)
-  resources :books do
+  # Articles (main editing interface)
+  resources :articles do
     resources :sections, only: [:create, :update, :destroy] do
       member do
         patch :move_up
@@ -33,5 +36,5 @@ Rails.application.routes.draw do
   get "autocomplete/taxa", to: "autocomplete#taxa"
 
   # Defines the root path route ("/")
-  root "books#index"
+  root "articles#index"
 end

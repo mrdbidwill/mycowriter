@@ -1,18 +1,14 @@
 class Paragraph < ApplicationRecord
   belongs_to :section
 
-  validates :content, presence: true
-  validates :position, presence: true
+  # Acts as list for reordering paragraphs within a section
+  acts_as_list scope: :section
 
-  before_validation :set_position, on: :create
+  validates :content, presence: true
+
   before_save :sanitize_content
 
   private
-
-  def set_position
-    return if position.present?
-    self.position = section.paragraphs.maximum(:position).to_i + 1
-  end
 
   def sanitize_content
     # Allow specific HTML tags for formatting

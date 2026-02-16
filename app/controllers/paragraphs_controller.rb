@@ -1,15 +1,16 @@
 class ParagraphsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_section
+  before_action :authorize_book
   before_action :set_paragraph, only: [:update, :destroy, :move_up, :move_down]
 
   def create
     @paragraph = @section.paragraphs.build(paragraph_params)
-    @paragraph.position = @section.paragraphs.maximum(:position).to_i + 1
 
     if @paragraph.save
-      redirect_to edit_book_path(@section.book), notice: "Paragraph was successfully created."
+      redirect_to edit_article_path(@section.article), notice: "Paragraph was successfully created.", status: :see_other
     else
-      redirect_to edit_book_path(@section.book), alert: "Error creating paragraph: #{@paragraph.errors.full_messages.join(', ')}"
+      redirect_to edit_article_path(@section.article), alert: "Error creating paragraph: #{@paragraph.errors.full_messages.join(', ')}", status: :see_other
     end
   end
 
@@ -43,6 +44,10 @@ class ParagraphsController < ApplicationController
 
   def set_section
     @section = Section.find(params[:section_id])
+  end
+
+  def authorize_book
+    authorize @section.article, :update?
   end
 
   def set_paragraph

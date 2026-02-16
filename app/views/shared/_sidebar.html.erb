@@ -1,0 +1,113 @@
+<!-- Mobile hamburger button -->
+<button id="sidebar-toggle" class="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md shadow-lg">
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+  </svg>
+</button>
+
+<!-- Sidebar overlay for mobile -->
+<div id="sidebar-overlay" class="lg:hidden hidden fixed inset-0 bg-black bg-opacity-50 z-30"></div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 flex-shrink-0 bg-gray-50 border-r border-gray-300 p-4 fixed lg:static h-full overflow-y-auto z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+  <!-- Close button for mobile -->
+  <button id="sidebar-close" class="lg:hidden absolute top-4 right-4 text-gray-600 hover:text-gray-900">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  <!-- Logo/Title -->
+  <div class="mb-4 mt-8 lg:mt-0">
+    <%= link_to root_path, class: "block hover:opacity-80 transition" do %>
+      <h1 class="text-2xl font-bold text-gray-800">MycoWriter</h1>
+      <p class="text-xs text-gray-600">Mushroom Article Creator</p>
+    <% end %>
+  </div>
+
+  <!-- Logged in user info -->
+  <% if user_signed_in? %>
+    <div class="mb-3 p-2 bg-green-50 border border-green-300 rounded text-center">
+      <p class="text-xs text-green-700 mb-1">Logged in as</p>
+      <p class="text-sm font-semibold text-green-900"><%= current_user.display_name %></p>
+    </div>
+  <% end %>
+
+  <!-- Home Button -->
+  <div class="mb-6">
+    <%= link_to "Home", root_path, class: "block px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition text-center" %>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="space-y-1">
+    <% if user_signed_in? %>
+      <!-- My Articles -->
+      <%= link_to "My Articles", articles_path(my_articles: true), class: "block px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition" %>
+
+      <!-- All Articles -->
+      <%= link_to "All Articles", articles_path, class: "block px-3 py-2 rounded bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium transition" %>
+
+      <!-- Add New Article -->
+      <%= link_to "Add New Article", new_article_path, class: "block px-3 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition" %>
+
+      <hr class="my-4 border-gray-300">
+
+      <!-- Contact -->
+      <%= link_to "Contact", pages_contact_path, class: "block px-3 py-2 rounded hover:bg-gray-200 text-gray-700 text-sm transition" %>
+
+      <!-- Terms of Service -->
+      <%= link_to "Terms of Service", pages_terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-gray-200 text-gray-700 text-sm transition" %>
+
+      <hr class="my-4 border-gray-300">
+
+      <!-- Account Settings -->
+      <%= link_to "Account Settings", edit_user_registration_path, class: "block px-3 py-2 rounded hover:bg-gray-200 text-gray-700 text-sm transition" %>
+
+      <!-- Sign Out -->
+      <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "w-full text-left px-3 py-2 rounded hover:bg-red-100 text-red-700 text-sm transition" %>
+    <% else %>
+      <!-- All Articles (not signed in) -->
+      <%= link_to "All Articles", articles_path, class: "block px-3 py-2 rounded bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium transition" %>
+
+      <hr class="my-4 border-gray-300">
+
+      <!-- Contact -->
+      <%= link_to "Contact", pages_contact_path, class: "block px-3 py-2 rounded hover:bg-gray-200 text-gray-700 text-sm transition" %>
+
+      <!-- Terms of Service -->
+      <%= link_to "Terms of Service", pages_terms_of_service_path, class: "block px-3 py-2 rounded hover:bg-gray-200 text-gray-700 text-sm transition" %>
+
+      <hr class="my-4 border-gray-300">
+
+      <!-- Sign In -->
+      <%= link_to "Sign In", new_user_session_path, class: "block px-3 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition text-center" %>
+
+      <!-- Sign Up -->
+      <%= link_to "Sign Up", new_user_registration_path, class: "block px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition text-center" %>
+    <% end %>
+  </nav>
+</aside>
+
+<script>
+  // Mobile sidebar toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    const closeBtn = document.getElementById('sidebar-close');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+    }
+
+    toggleBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+  });
+</script>

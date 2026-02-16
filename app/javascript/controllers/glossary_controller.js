@@ -110,16 +110,16 @@ export default class extends Controller {
     this.removeTooltip()
 
     // Create modal if it doesn't exist
-    if (!this.hasModalTarget) {
+    if (!this.modalElement) {
       this.createModal()
     }
 
-    this.modalTarget.querySelector('.glossary-modal-content').innerHTML = '<p>Loading...</p>'
-    this.modalTarget.classList.add('active')
-    this.modalTarget.querySelector('.glossary-modal-title').textContent = term
+    this.modalElement.querySelector('.glossary-modal-content').innerHTML = '<p>Loading...</p>'
+    this.modalElement.classList.add('active')
+    this.modalElement.querySelector('.glossary-modal-title').textContent = term
 
     this.fetchDefinition(term).then(definition => {
-      const content = this.modalTarget.querySelector('.glossary-modal-content')
+      const content = this.modalElement.querySelector('.glossary-modal-content')
       content.innerHTML = `
         <p>${definition}</p>
         <p class="glossary-attribution">
@@ -130,17 +130,16 @@ export default class extends Controller {
   }
 
   hideModal() {
-    if (this.hasModalTarget) {
-      this.modalTarget.classList.remove('active')
+    if (this.modalElement) {
+      this.modalElement.classList.remove('active')
     }
     this.modalOpen = false
   }
 
   createModal() {
-    const modal = document.createElement('div')
-    modal.className = 'glossary-modal'
-    modal.dataset.glossaryTarget = 'modal'
-    modal.innerHTML = `
+    this.modalElement = document.createElement('div')
+    this.modalElement.className = 'glossary-modal'
+    this.modalElement.innerHTML = `
       <div class="glossary-modal-backdrop" data-action="click->glossary#hideModal"></div>
       <div class="glossary-modal-dialog">
         <div class="glossary-modal-header">
@@ -152,7 +151,7 @@ export default class extends Controller {
         </div>
       </div>
     `
-    document.body.appendChild(modal)
+    this.element.appendChild(this.modalElement)
   }
 
   handleKeydown(event) {

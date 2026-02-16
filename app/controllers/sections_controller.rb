@@ -1,15 +1,16 @@
 class SectionsController < ApplicationController
-  before_action :set_book
+  before_action :authenticate_user!
+  before_action :set_article
+  before_action :authorize_article
   before_action :set_section, only: [:update, :destroy, :move_up, :move_down]
 
   def create
-    @section = @book.sections.build(section_params)
-    @section.position = @book.sections.maximum(:position).to_i + 1
+    @section = @article.sections.build(section_params)
 
     if @section.save
-      redirect_to edit_book_path(@book), notice: "Section was successfully created."
+      redirect_to edit_article_path(@article), notice: "Section was successfully created.", status: :see_other
     else
-      redirect_to edit_book_path(@book), alert: "Error creating section: #{@section.errors.full_messages.join(', ')}"
+      redirect_to edit_article_path(@article), alert: "Error creating section: #{@section.errors.full_messages.join(', ')}", status: :see_other
     end
   end
 
@@ -41,12 +42,16 @@ class SectionsController < ApplicationController
 
   private
 
-  def set_book
-    @book = Book.find(params[:book_id])
+  def set_article
+    @article = Article.find(params[:article_id])
+  end
+
+  def authorize_article
+    authorize @article, :update?
   end
 
   def set_section
-    @section = @book.sections.find(params[:id])
+    @section = @article.sections.find(params[:id])
   end
 
   def section_params
