@@ -7,13 +7,9 @@ class ParagraphsController < ApplicationController
     @paragraph.position = @section.paragraphs.maximum(:position).to_i + 1
 
     if @paragraph.save
-      render json: {
-        id: @paragraph.id,
-        content: @paragraph.content,
-        position: @paragraph.position
-      }, status: :created
+      redirect_to edit_book_path(@section.book), notice: "Paragraph was successfully created."
     else
-      render json: { errors: @paragraph.errors.full_messages }, status: :unprocessable_entity
+      redirect_to edit_book_path(@section.book), alert: "Error creating paragraph: #{@paragraph.errors.full_messages.join(', ')}"
     end
   end
 

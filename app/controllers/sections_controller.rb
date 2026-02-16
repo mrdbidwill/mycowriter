@@ -7,13 +7,9 @@ class SectionsController < ApplicationController
     @section.position = @book.sections.maximum(:position).to_i + 1
 
     if @section.save
-      render json: {
-        id: @section.id,
-        title: @section.title,
-        position: @section.position
-      }, status: :created
+      redirect_to edit_book_path(@book), notice: "Section was successfully created."
     else
-      render json: { errors: @section.errors.full_messages }, status: :unprocessable_entity
+      redirect_to edit_book_path(@book), alert: "Error creating section: #{@section.errors.full_messages.join(', ')}"
     end
   end
 
