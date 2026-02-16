@@ -5,9 +5,9 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = if user_signed_in? && params[:my_articles]
-               current_user.articles.order(updated_at: :desc)
+               current_user.articles.includes(:user, :sections).order(updated_at: :desc)
              else
-               Article.all.order(updated_at: :desc)
+               Article.includes(:user, :sections).order(updated_at: :desc)
              end
   end
 
