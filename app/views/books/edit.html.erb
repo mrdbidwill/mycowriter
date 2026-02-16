@@ -123,28 +123,30 @@
 
               <!-- Section Content (Collapsible) -->
               <div id="section-<%= section.id %>" class="p-6 space-y-4">
-                <!-- Add Paragraph Button -->
-                <button type="button" onclick="showNewParagraphForm(<%= section.id %>)" class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                  <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                  Add Paragraph
-                </button>
+                <% if section.persisted? %>
+                  <!-- Add Paragraph Button -->
+                  <button type="button" onclick="showNewParagraphForm(<%= section.id %>)" class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Paragraph
+                  </button>
 
-                <!-- New Paragraph Form -->
-                <div id="new-paragraph-form-<%= section.id %>" class="hidden bg-gray-50 rounded-lg p-4">
-                  <%= form_with(model: [@book, section, section.paragraphs.build], local: true) do |form| %>
-                    <div class="space-y-3">
-                      <%= form.text_area :content, rows: 4, placeholder: "Write your paragraph content here...", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
-                      <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="hideNewParagraphForm(<%= section.id %>)" class="px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                          Cancel
-                        </button>
-                        <%= form.submit "Add Paragraph", class: "px-3 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+                  <!-- New Paragraph Form -->
+                  <div id="new-paragraph-form-<%= section.id %>" class="hidden bg-gray-50 rounded-lg p-4">
+                    <%= form_with(model: [@book, section, section.paragraphs.build], local: true) do |form| %>
+                      <div class="space-y-3">
+                        <%= form.text_area :content, rows: 4, placeholder: "Write your paragraph content here...", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+                        <div class="flex justify-end space-x-3">
+                          <button type="button" onclick="hideNewParagraphForm(<%= section.id %>)" class="px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Cancel
+                          </button>
+                          <%= form.submit "Add Paragraph", class: "px-3 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+                        </div>
                       </div>
-                    </div>
-                  <% end %>
-                </div>
+                    <% end %>
+                  </div>
+                <% end %>
 
                 <!-- Paragraphs List -->
                 <% if section.paragraphs.any? %>
