@@ -1,5 +1,5 @@
 class AutocompleteController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:taxa]
+  skip_before_action :verify_authenticity_token, only: [ :taxa ]
 
   # GET /autocomplete/taxa?q=Agaricus
   def taxa

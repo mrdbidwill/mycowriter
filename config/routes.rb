@@ -18,12 +18,12 @@ Rails.application.routes.draw do
 
   # Articles (main editing interface)
   resources :articles do
-    resources :sections, only: [:create, :update, :destroy] do
+    resources :sections, only: [ :create, :update, :destroy ] do
       member do
         patch :move_up
         patch :move_down
       end
-      resources :paragraphs, only: [:create, :update, :destroy] do
+      resources :paragraphs, only: [ :create, :update, :destroy ] do
         member do
           patch :move_up
           patch :move_down

@@ -2,7 +2,7 @@ class ParagraphsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_section
   before_action :authorize_book
-  before_action :set_paragraph, only: [:update, :destroy, :move_up, :move_down]
+  before_action :set_paragraph, only: [ :update, :destroy, :move_up, :move_down ]
 
   def create
     @paragraph = @section.paragraphs.build(paragraph_params)

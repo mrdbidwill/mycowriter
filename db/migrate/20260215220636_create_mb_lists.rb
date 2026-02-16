@@ -21,7 +21,7 @@ class CreateMbLists < ActiveRecord::Migration[8.0]
     SQL
 
     # Add indexes with a specified key length for TEXT columns
-    add_index :mb_lists, [:taxon_name, :rank_name], name: "index_mblists_on_taxon_name_and_rank_name", length: { taxon_name: 255, rank_name: 255 }
+    add_index :mb_lists, [ :taxon_name, :rank_name ], name: "index_mblists_on_taxon_name_and_rank_name", length: { taxon_name: 255, rank_name: 255 }
     add_index :mb_lists, :taxon_name, name: "index_mblists_on_taxon_name", length: 255
     add_index :mb_lists, :rank_name, name: "index_mblists_on_rank_name", length: 255
     add_index :mb_lists, :name_status, name: "index_mblists_on_name_status", length: 255

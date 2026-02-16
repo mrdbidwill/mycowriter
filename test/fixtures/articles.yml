@@ -5,9 +5,11 @@ one:
   description: MyText
   published: false
   published_at: 2026-02-15 16:07:05
+  user: one
 
 two:
   title: MyString
   description: MyText
   published: false
   published_at: 2026-02-15 16:07:05
+  user: one

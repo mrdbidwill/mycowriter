@@ -1,14 +1,14 @@
 class ArticlesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_article, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :set_article, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorize_article, only: [ :edit, :update, :destroy ]
 
   def index
     @articles = if user_signed_in? && params[:my_articles]
                current_user.articles.includes(:user, :sections).order(updated_at: :desc)
-             else
+    else
                Article.includes(:user, :sections).order(updated_at: :desc)
-             end
+    end
   end
 
   def show

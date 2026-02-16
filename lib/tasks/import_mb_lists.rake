@@ -4,12 +4,12 @@ namespace :db do
     puts "Using direct SQL dump approach for faster import..."
 
     # Get credentials from environment
-    username = ENV['MYSQL_USER'] || 'mrdbid_user'
-    password = ENV['MYSQL_PASSWORD']
-    host = ENV['DB_HOST'] || '127.0.0.1'
+    username = ENV["MYSQL_USER"] || "mrdbid_user"
+    password = ENV["MYSQL_PASSWORD"]
+    host = ENV["DB_HOST"] || "127.0.0.1"
 
     puts "Dumping mb_lists table from mrdbid_development..."
-    dump_file = Rails.root.join('tmp', 'mb_lists_dump.sql')
+    dump_file = Rails.root.join("tmp", "mb_lists_dump.sql")
 
     # Dump only the data (no structure) from mrdbid database
     dump_cmd = "mysqldump -u #{username} -p'#{password}' -h #{host} " \

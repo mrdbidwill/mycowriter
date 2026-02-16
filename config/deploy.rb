@@ -34,7 +34,7 @@ after "deploy:published", "systemd_puma:restart"
 
 # Custom tasks to manage Puma via systemd
 namespace :systemd_puma do
-  desc 'Install Puma systemd service'
+  desc "Install Puma systemd service"
   task :install_service do
     on roles(:app) do
       execute :sudo, :cp, "#{release_path}/config/puma.service", "/etc/systemd/system/puma-mycowriter.service"
@@ -43,56 +43,56 @@ namespace :systemd_puma do
     end
   end
 
-  desc 'Start Puma via systemd'
+  desc "Start Puma via systemd"
   task :start do
     on roles(:app) do
       execute :sudo, :systemctl, "start", "puma-mycowriter.service"
     end
   end
 
-  desc 'Stop Puma via systemd'
+  desc "Stop Puma via systemd"
   task :stop do
     on roles(:app) do
       execute :sudo, :systemctl, "stop", "puma-mycowriter.service"
     end
   end
 
-  desc 'Restart Puma via systemd'
+  desc "Restart Puma via systemd"
   task :restart do
     on roles(:app) do
       execute :sudo, :systemctl, "restart", "puma-mycowriter.service"
     end
   end
 
-  desc 'Check Puma systemd service status'
+  desc "Check Puma systemd service status"
   task :status do
     on roles(:app) do
       execute :sudo, :systemctl, "status", "puma-mycowriter.service"
     end
   end
 
-  desc 'Show Puma systemd service logs'
+  desc "Show Puma systemd service logs"
   task :logs do
     on roles(:app) do
       execute :sudo, :journalctl, "-xeu", "puma-mycowriter.service", "--no-pager", "-n", "50"
     end
   end
 
-  desc 'Show Puma stderr log file'
+  desc "Show Puma stderr log file"
   task :stderr do
     on roles(:app) do
       execute :tail, "-n", "50", "#{shared_path}/log/puma_stderr.log"
     end
   end
 
-  desc 'Show Puma stdout log file'
+  desc "Show Puma stdout log file"
   task :stdout do
     on roles(:app) do
       execute :tail, "-n", "50", "#{shared_path}/log/puma_stdout.log"
     end
   end
 
-  desc 'Verify Puma is running and responding'
+  desc "Verify Puma is running and responding"
   task :verify do
     on roles(:app) do
       info "Waiting 10 seconds for Puma to fully start..."
@@ -135,10 +135,10 @@ after "systemd_puma:restart", "systemd_puma:verify"
 # Override cleanup task to ignore permission errors on bootsnap cache files
 Rake::Task["deploy:cleanup"].clear_actions
 namespace :deploy do
-  desc 'Clean up old releases (ignore permission errors)'
+  desc "Clean up old releases (ignore permission errors)"
   task :cleanup do
     on release_roles :all do |host|
-      releases = capture(:ls, '-xtr', releases_path).split
+      releases = capture(:ls, "-xtr", releases_path).split
       if releases.count >= fetch(:keep_releases)
         info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases)))
@@ -146,7 +146,7 @@ namespace :deploy do
           directories.each do |release|
             # Delete each directory individually and ignore permission errors
             begin
-              execute :rm, '-rf', releases_path.join(release)
+              execute :rm, "-rf", releases_path.join(release)
             rescue SSHKit::Command::Failed => e
               # Silently ignore permission denied errors during cleanup
               warn "Some files in #{release} could not be deleted (permission denied), skipping..."

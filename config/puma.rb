@@ -28,13 +28,13 @@ threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
 # Production vs Development configuration
-if ENV['RAILS_ENV'] == 'production'
+if ENV["RAILS_ENV"] == "production"
   # Use Unix socket in production (faster, more secure)
   bind "unix://#{ENV['PUMA_SOCKET'] || '/opt/mycowriter/shared/tmp/sockets/puma.sock'}"
 
   # Set up pid and state files for process management
-  pidfile ENV['PUMA_PID'] || '/opt/mycowriter/shared/tmp/pids/puma.pid'
-  state_path ENV['PUMA_STATE'] || '/opt/mycowriter/shared/tmp/pids/puma.state'
+  pidfile ENV["PUMA_PID"] || "/opt/mycowriter/shared/tmp/pids/puma.pid"
+  state_path ENV["PUMA_STATE"] || "/opt/mycowriter/shared/tmp/pids/puma.state"
 
   # Logging is handled by systemd - no need to redirect here
 else

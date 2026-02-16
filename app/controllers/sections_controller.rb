@@ -2,7 +2,7 @@ class SectionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_article
   before_action :authorize_article
-  before_action :set_section, only: [:update, :destroy, :move_up, :move_down]
+  before_action :set_section, only: [ :update, :destroy, :move_up, :move_down ]
 
   def create
     @section = @article.sections.build(section_params)
