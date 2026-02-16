@@ -19,7 +19,8 @@ class ArticlesController < ApplicationController
   def new
     @article = current_user.articles.build
     authorize @article
-    @article.sections.build.paragraphs.build
+    section = @article.sections.build
+    section.paragraphs.build
   end
 
   def edit
