@@ -36,360 +36,60 @@
   <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- Article Info Section -->
-    <div class="bg-white rounded-lg shadow mb-6 p-6">
+    <!-- Article Editor -->
+    <div class="bg-white rounded-lg shadow p-6" data-controller="paste-handler">
       <%= form_with(model: @article, local: true) do |form| %>
-        <div class="grid grid-cols-1 gap-6">
+        <div class="space-y-6">
+          <!-- Title -->
           <div>
-            <%= form.label :title, "Article Title", class: "block text-sm font-medium text-gray-700" %>
-            <%= form.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+            <%= form.label :title, "Article Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.text_field :title, class: "block w-full text-2xl font-bold border-0 border-b-2 border-gray-200 focus:border-indigo-500 focus:ring-0 px-0 py-2", placeholder: "Enter article title..." %>
           </div>
+
+          <!-- Description -->
           <div>
-            <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
-            <%= form.rich_text_area :description %>
+            <%= form.label :description, "Brief Description (optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.rich_text_area :description, class: "prose max-w-none" %>
           </div>
+
+          <!-- Body Content with Toolbar -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <%= form.label :body, "Article Content", class: "block text-sm font-medium text-gray-700" %>
+              <div class="flex items-center space-x-2" data-controller="text-formatter" data-text-formatter-target="toolbar">
+                <button type="button" data-action="click->text-formatter#insertParagraph" class="p-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded" title="Insert paragraph break">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                  </svg>
+                </button>
+                <button type="button" data-action="click->text-formatter#makeBold" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded font-bold" title="Bold">
+                  B
+                </button>
+                <button type="button" data-action="click->text-formatter#makeItalic" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded italic" title="Italic">
+                  I
+                </button>
+              </div>
+            </div>
+            <%= form.text_area :body,
+                rows: 20,
+                class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm",
+                placeholder: "Paste or write your article content here. Formatting will be automatically cleaned when pasting...",
+                data: {
+                  action: "paste->paste-handler#cleanPaste",
+                  text_formatter_target: "textarea"
+                } %>
+            <p class="mt-2 text-xs text-gray-500">
+              Tip: Paste text from any source - formatting will be cleaned automatically. Use toolbar buttons or keyboard shortcuts for formatting.
+            </p>
+          </div>
+
+          <!-- Save Button -->
           <div class="flex justify-end">
-            <%= form.submit "Save Article Info", class: "inline-flex justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+            <%= form.submit "Save Article", class: "inline-flex justify-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
           </div>
         </div>
       <% end %>
     </div>
 
-    <!-- Sections List -->
-    <div class="space-y-6">
-      <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold text-gray-900">Sections</h2>
-        <button type="button" onclick="document.getElementById('new-section-form').classList.remove('hidden')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-          <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          Add Section
-        </button>
-      </div>
-
-      <!-- New Section Form -->
-      <div id="new-section-form" class="hidden bg-white border-2 border-indigo-300 rounded-lg shadow-md p-6">
-        <%= form_with(model: [@article, @article.sections.build], local: true) do |form| %>
-          <div class="space-y-4">
-            <div>
-              <%= form.label :title, "Section Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
-              <%= form.rich_text_area :title, placeholder: "e.g., Introduction, Chapter 1, Species Descriptions" %>
-            </div>
-            <div class="flex justify-end space-x-3">
-              <button type="button" onclick="document.getElementById('new-section-form').classList.add('hidden')" class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Cancel
-              </button>
-              <%= form.submit "Create Section", class: "px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <!-- Existing Sections -->
-      <% if @article.sections.any? %>
-        <div class="space-y-4" id="sections-list">
-          <% @article.sections.select(&:persisted?).each do |section| %>
-            <div class="bg-white rounded-lg shadow" data-section-id="<%= section.id %>">
-              <!-- Section Header -->
-              <div class="p-6 border-b border-gray-200">
-                <div class="flex items-start justify-between">
-                  <div class="flex-1">
-                    <div class="flex items-center space-x-3">
-                      <div class="cursor-move text-gray-400 hover:text-gray-600" title="Drag to reorder" data-no-ai-assist="true">
-                        <svg class="h-5 w-5 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                        </svg>
-                      </div>
-                      <h3 class="text-lg font-medium text-gray-900"><%= section.title %></h3>
-                      <span class="text-sm text-gray-500">(<%= pluralize(section.paragraphs.count, 'paragraph') %>)</span>
-                    </div>
-                  </div>
-                  <div class="flex items-center space-x-2">
-                    <% if section.persisted? %>
-                      <button type="button" onclick="editSection(<%= section.id %>)" class="p-1 text-indigo-600 hover:text-indigo-800" title="Edit section title">
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                      </button>
-                    <% end %>
-                    <button type="button" onclick="toggleSection(<%= section.id %>)" class="p-1 text-gray-400 hover:text-gray-600" title="Collapse/Expand section" id="toggle-section-<%= section.id %>">
-                      <svg class="h-5 w-5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <% if section.persisted? %>
-                      <%= button_to article_section_path(@article, section), method: :delete, data: { turbo_confirm: "Delete this section and all its paragraphs?" }, class: "p-1 text-red-600 hover:text-red-800", title: "Delete section" do %>
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      <% end %>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Section Content (Collapsible) -->
-              <div id="section-<%= section.id %>" class="p-6 space-y-4">
-                <% if section.persisted? %>
-                  <!-- Add Paragraph Button -->
-                  <button type="button" onclick="showNewParagraphForm(<%= section.id %>)" class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Add Paragraph
-                  </button>
-
-                  <!-- New Paragraph Form -->
-                  <div id="new-paragraph-form-<%= section.id %>" class="hidden bg-white border-2 border-indigo-300 rounded-lg p-4 shadow-md" data-controller="paste-handler">
-                    <%= form_with(model: [@article, section, section.paragraphs.build], local: true) do |form| %>
-                      <div class="space-y-3">
-                        <div>
-                          <label class="block text-sm font-medium text-gray-700 mb-2">Paragraph Content</label>
-                          <%= form.text_area :content,
-                              placeholder: "Write your paragraph content here...",
-                              rows: 8,
-                              class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
-                              data: { action: "paste->paste-handler#cleanPaste" } %>
-                          <p class="mt-1 text-xs text-gray-500">Paste text from any source - formatting will be automatically cleaned.</p>
-                        </div>
-                        <div class="flex justify-end space-x-3">
-                          <button type="button" onclick="hideNewParagraphForm(<%= section.id %>)" class="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            Cancel
-                          </button>
-                          <%= form.submit "Add Paragraph", class: "px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
-                        </div>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-
-                <!-- Paragraphs List -->
-                <% if section.paragraphs.any? %>
-                  <div class="space-y-3" id="paragraphs-list-<%= section.id %>">
-                    <% section.paragraphs.select(&:persisted?).each do |paragraph| %>
-                      <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100" data-paragraph-id="<%= paragraph.id %>">
-                        <div class="flex items-start space-x-3">
-                          <div class="cursor-move text-gray-400 hover:text-gray-600">
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
-                            </svg>
-                          </div>
-                          <div class="flex-1">
-                            <p class="text-sm text-gray-700" data-full-content="<%= paragraph.content.to_s %>"><%= truncate(paragraph.content.to_s, length: 200) %></p>
-                          </div>
-                          <div class="flex items-center space-x-2">
-                            <% if paragraph.persisted? %>
-                              <button type="button" onclick="editParagraph(<%= paragraph.id %>)" class="text-indigo-600 hover:text-indigo-800">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                              </button>
-                              <%= button_to article_section_paragraph_path(@article, section, paragraph), method: :delete, data: { turbo_confirm: "Delete this paragraph?" }, class: "text-red-600 hover:text-red-800" do %>
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                              <% end %>
-                            <% end %>
-                          </div>
-                        </div>
-                      </div>
-                    <% end %>
-                  </div>
-                <% else %>
-                  <p class="text-center text-sm text-gray-500 py-4">No paragraphs yet. Click "Add Paragraph" to get started.</p>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="text-center py-12 bg-white rounded-lg shadow">
-          <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">No sections</h3>
-          <p class="mt-1 text-sm text-gray-500">Get started by adding your first section.</p>
-        </div>
-      <% end %>
-    </div>
   </div>
 </div>
-
-<script>
-function toggleSection(sectionId) {
-  const section = document.getElementById(`section-${sectionId}`);
-  const toggleButton = document.getElementById(`toggle-section-${sectionId}`);
-  const arrow = toggleButton.querySelector('svg');
-
-  section.classList.toggle('hidden');
-
-  // Rotate arrow icon
-  if (section.classList.contains('hidden')) {
-    arrow.style.transform = 'rotate(-90deg)';
-  } else {
-    arrow.style.transform = 'rotate(0deg)';
-  }
-}
-
-function showNewParagraphForm(sectionId) {
-  document.getElementById(`new-paragraph-form-${sectionId}`).classList.remove('hidden');
-}
-
-function hideNewParagraphForm(sectionId) {
-  document.getElementById(`new-paragraph-form-${sectionId}`).classList.add('hidden');
-}
-
-function editSection(sectionId) {
-  const sectionElement = document.querySelector(`[data-section-id="${sectionId}"]`);
-  const titleElement = sectionElement.querySelector('h3');
-  const currentTitle = titleElement.textContent.trim();
-
-  // Create input field
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = currentTitle;
-  input.className = 'text-lg font-medium text-gray-900 border border-indigo-500 rounded px-2 py-1';
-
-  // Replace title with input
-  titleElement.replaceWith(input);
-  input.focus();
-  input.select();
-
-  // Handle save on blur or Enter key
-  const saveEdit = async () => {
-    const newTitle = input.value.trim();
-    if (newTitle && newTitle !== currentTitle) {
-      try {
-        const response = await fetch(`/articles/<%= @article.id %>/sections/${sectionId}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
-          },
-          body: JSON.stringify({ section: { title: newTitle } })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const newTitle = document.createElement('h3');
-          newTitle.className = 'text-lg font-medium text-gray-900';
-          newTitle.textContent = data.title;
-          input.replaceWith(newTitle);
-        } else {
-          alert('Failed to update section title');
-          input.value = currentTitle;
-        }
-      } catch (error) {
-        console.error('Error updating section:', error);
-        alert('Error updating section title');
-      }
-    } else {
-      // Restore original title
-      const restoredTitle = document.createElement('h3');
-      restoredTitle.className = 'text-lg font-medium text-gray-900';
-      restoredTitle.textContent = currentTitle;
-      input.replaceWith(restoredTitle);
-    }
-  };
-
-  input.addEventListener('blur', saveEdit);
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      input.blur();
-    }
-  });
-}
-
-function editParagraph(paragraphId) {
-  const paragraphElement = document.querySelector(`[data-paragraph-id="${paragraphId}"]`);
-  const contentElement = paragraphElement.querySelector('p');
-  let currentContent = contentElement.getAttribute('data-full-content') || contentElement.textContent.trim();
-
-  // Create container with autocomplete and paste handler
-  const container = document.createElement('div');
-  container.className = 'relative w-full';
-
-  // Create textarea
-  const textarea = document.createElement('textarea');
-  textarea.value = currentContent;
-  textarea.className = 'w-full text-sm text-gray-700 border border-indigo-500 rounded px-2 py-1';
-  textarea.rows = 4;
-  textarea.setAttribute('data-autocomplete-target', 'input');
-  textarea.setAttribute('data-action', 'keyup->autocomplete#search blur->autocomplete#blur paste->paste-handler#cleanPaste');
-
-  // Create results div
-  const resultsDiv = document.createElement('div');
-  resultsDiv.className = 'autocomplete-results hidden';
-  resultsDiv.setAttribute('data-autocomplete-target', 'results');
-
-  // Set controllers BEFORE adding to DOM
-  container.setAttribute('data-controller', 'autocomplete paste-handler');
-
-  // Assemble container
-  container.appendChild(textarea);
-  container.appendChild(resultsDiv);
-
-  // Replace content with container - Stimulus will auto-connect
-  contentElement.replaceWith(container);
-
-  // Focus textarea after a small delay to ensure Stimulus has connected
-  setTimeout(() => {
-    textarea.focus();
-  }, 100);
-
-  // Handle save on blur with delay to allow autocomplete clicks
-  let blurTimeout;
-  const saveEdit = async () => {
-    const newContent = textarea.value.trim();
-    if (newContent && newContent !== currentContent) {
-      try {
-        const sectionId = paragraphElement.closest('[data-section-id]').getAttribute('data-section-id');
-        const response = await fetch(`/articles/<%= @article.id %>/sections/${sectionId}/paragraphs/${paragraphId}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
-          },
-          body: JSON.stringify({ paragraph: { content: newContent } })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const newParagraph = document.createElement('p');
-          newParagraph.className = 'text-sm text-gray-700';
-          newParagraph.setAttribute('data-full-content', data.content);
-          newParagraph.textContent = data.content.substring(0, 200) + (data.content.length > 200 ? '...' : '');
-          container.replaceWith(newParagraph);
-        } else {
-          alert('Failed to update paragraph');
-          textarea.value = currentContent;
-        }
-      } catch (error) {
-        console.error('Error updating paragraph:', error);
-        alert('Error updating paragraph');
-      }
-    } else {
-      // Restore original content
-      const restoredParagraph = document.createElement('p');
-      restoredParagraph.className = 'text-sm text-gray-700';
-      restoredParagraph.setAttribute('data-full-content', currentContent);
-      const displayText = currentContent.substring(0, 200) + (currentContent.length > 200 ? '...' : '');
-      restoredParagraph.textContent = displayText;
-      container.replaceWith(restoredParagraph);
-    }
-  };
-
-  // Delay blur handler to allow autocomplete clicks (must be longer than autocomplete's 300ms delay)
-  textarea.addEventListener('blur', () => {
-    blurTimeout = setTimeout(saveEdit, 500);
-  });
-
-  // Cancel blur timeout if user refocuses
-  textarea.addEventListener('focus', () => {
-    if (blurTimeout) {
-      clearTimeout(blurTimeout);
-    }
-  });
-}
-</script>

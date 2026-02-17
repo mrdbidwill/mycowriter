@@ -1,0 +1,56 @@
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["textarea"]
+
+  insertParagraph() {
+    const textarea = this.textareaTarget
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const value = textarea.value
+
+    // Insert double newline for paragraph break
+    const newValue = value.substring(0, start) + '\n\n' + value.substring(end)
+    textarea.value = newValue
+
+    // Move cursor after the inserted newlines
+    const newPos = start + 2
+    textarea.setSelectionRange(newPos, newPos)
+    textarea.focus()
+
+    // Trigger input event
+    textarea.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
+  makeBold() {
+    this.wrapSelection('**', '**')
+  }
+
+  makeItalic() {
+    this.wrapSelection('*', '*')
+  }
+
+  wrapSelection(before, after) {
+    const textarea = this.textareaTarget
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const value = textarea.value
+    const selectedText = value.substring(start, end)
+
+    // If no selection, insert markers with cursor between
+    if (start === end) {
+      const newValue = value.substring(0, start) + before + after + value.substring(end)
+      textarea.value = newValue
+      const newPos = start + before.length
+      textarea.setSelectionRange(newPos, newPos)
+    } else {
+      // Wrap selected text
+      const newValue = value.substring(0, start) + before + selectedText + after + value.substring(end)
+      textarea.value = newValue
+      textarea.setSelectionRange(start + before.length, end + before.length)
+    }
+
+    textarea.focus()
+    textarea.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+}

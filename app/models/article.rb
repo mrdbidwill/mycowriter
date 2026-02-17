@@ -8,6 +8,7 @@ class Article < ApplicationRecord
 
   validates :title, presence: true, profanity: true
   validates :description, profanity: true, allow_blank: true
+  validates :body, profanity: true, allow_blank: true
   validate :validate_attachment_content_types
 
   accepts_nested_attributes_for :sections, allow_destroy: true

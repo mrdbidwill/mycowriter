@@ -31,46 +31,24 @@
       <% if @article.user %>
         <span>By <%= @article.user.display_name %></span>
       <% end %>
-      <span><%= pluralize(@article.sections.count, 'section') %></span>
       <span>Updated <%= time_ago_in_words(@article.updated_at) %> ago</span>
     </div>
   </div>
 
   <!-- Article Content -->
-  <% if @article.sections.any? %>
-    <div class="space-y-8">
-      <% @article.sections.order(position: :asc).each do |section| %>
-        <section class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <!-- Section Header -->
-          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <div class="prose max-w-none">
-              <h1><%= section.title %></h1>
-            </div>
-            <p class="text-sm text-gray-500 mt-1"><%= pluralize(section.paragraphs.count, 'paragraph') %></p>
-          </div>
-
-          <!-- Section Paragraphs -->
-          <div class="px-6 py-4 space-y-4" data-controller="glossary">
-            <% if section.paragraphs.any? %>
-              <% section.paragraphs.order(position: :asc).each do |paragraph| %>
-                <div class="prose max-w-none text-gray-700">
-                  <p><%= mark_glossary_terms(paragraph.content.to_s) %></p>
-                </div>
-              <% end %>
-            <% else %>
-              <p class="text-gray-500 italic">No paragraphs in this section yet.</p>
-            <% end %>
-          </div>
-        </section>
-      <% end %>
+  <% if @article.body.present? %>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-8 prose max-w-none" data-controller="glossary">
+        <%= simple_format(mark_glossary_terms(@article.body), {}, sanitize: false) %>
+      </div>
     </div>
   <% else %>
     <div class="text-center py-12">
       <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No sections</h3>
-      <p class="mt-1 text-sm text-gray-500">This article doesn't have any sections yet.</p>
+      <h3 class="mt-2 text-sm font-medium text-gray-900">No content</h3>
+      <p class="mt-1 text-sm text-gray-500">This article doesn't have any content yet.</p>
       <% if user_signed_in? && @article.user_id == current_user.id %>
         <div class="mt-6">
           <%= link_to "Edit Article", edit_article_path(@article), class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
