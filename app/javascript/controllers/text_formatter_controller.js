@@ -30,6 +30,84 @@ export default class extends Controller {
     this.wrapSelection('*', '*')
   }
 
+  makeUnderline() {
+    this.wrapSelection('<u>', '</u>')
+  }
+
+  makeStrikethrough() {
+    this.wrapSelection('~~', '~~')
+  }
+
+  makeH1() {
+    this.insertLinePrefix('# ')
+  }
+
+  makeH2() {
+    this.insertLinePrefix('## ')
+  }
+
+  makeH3() {
+    this.insertLinePrefix('### ')
+  }
+
+  makeBulletList() {
+    this.insertLinePrefix('- ')
+  }
+
+  makeNumberedList() {
+    this.insertLinePrefix('1. ')
+  }
+
+  insertLink() {
+    const textarea = this.textareaTarget
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const value = textarea.value
+    const selectedText = value.substring(start, end)
+
+    if (selectedText) {
+      // Wrap selected text as link
+      const newValue = value.substring(0, start) + '[' + selectedText + '](url)' + value.substring(end)
+      textarea.value = newValue
+      // Select "url" for easy replacement
+      const urlStart = start + selectedText.length + 3
+      textarea.setSelectionRange(urlStart, urlStart + 3)
+    } else {
+      // Insert link template
+      const linkText = '[link text](url)'
+      const newValue = value.substring(0, start) + linkText + value.substring(end)
+      textarea.value = newValue
+      // Select "link text" for easy replacement
+      textarea.setSelectionRange(start + 1, start + 10)
+    }
+
+    textarea.focus()
+    textarea.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
+  insertLinePrefix(prefix) {
+    const textarea = this.textareaTarget
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const value = textarea.value
+
+    // Find the start of the current line
+    let lineStart = start
+    while (lineStart > 0 && value[lineStart - 1] !== '\n') {
+      lineStart--
+    }
+
+    // Insert prefix at the start of the line
+    const newValue = value.substring(0, lineStart) + prefix + value.substring(lineStart)
+    textarea.value = newValue
+
+    // Move cursor after the prefix
+    const newPos = start + prefix.length
+    textarea.setSelectionRange(newPos, newPos)
+    textarea.focus()
+    textarea.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
   wrapSelection(before, after) {
     const textarea = this.textareaTarget
     const start = textarea.selectionStart
