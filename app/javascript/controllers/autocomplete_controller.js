@@ -121,10 +121,36 @@ export default class extends Controller {
   positionResults() {
     if (!this.hasResultsTarget || !this.hasInputTarget) return
     const inputRect = this.inputTarget.getBoundingClientRect()
-    // Position at the top-left of the textarea (fixed positioning)
-    this.resultsTarget.style.top = `${inputRect.top + 40}px`
-    this.resultsTarget.style.left = `${inputRect.left}px`
-    this.resultsTarget.style.width = `${Math.min(inputRect.width, 500)}px`
+
+    // Get cursor position in textarea
+    const textarea = this.inputTarget
+    const cursorPos = textarea.selectionStart
+
+    // Create a mirror div to calculate cursor position
+    const mirror = document.createElement('div')
+    const computed = window.getComputedStyle(textarea)
+    mirror.style.cssText = `
+      position: absolute;
+      visibility: hidden;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: ${computed.fontFamily};
+      font-size: ${computed.fontSize};
+      line-height: ${computed.lineHeight};
+      padding: ${computed.padding};
+      width: ${inputRect.width}px;
+    `
+    mirror.textContent = textarea.value.substring(0, cursorPos)
+    document.body.appendChild(mirror)
+
+    const mirrorRect = mirror.getBoundingClientRect()
+    const lineHeight = parseInt(computed.lineHeight)
+    document.body.removeChild(mirror)
+
+    // Position dropdown at cursor location
+    this.resultsTarget.style.top = `${inputRect.top + mirrorRect.height + lineHeight}px`
+    this.resultsTarget.style.left = `${inputRect.left + 10}px`
+    this.resultsTarget.style.maxWidth = `${Math.min(inputRect.width - 20, 500)}px`
   }
 
   handleKeyNavigation(event) {
