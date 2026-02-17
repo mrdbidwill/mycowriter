@@ -171,7 +171,7 @@
                             </svg>
                           </div>
                           <div class="flex-1">
-                            <p class="text-sm text-gray-700" data-full-content="<%= paragraph.content %>"><%= truncate(strip_tags(paragraph.content), length: 200) %></p>
+                            <p class="text-sm text-gray-700" data-full-content="<%= paragraph.content.to_s %>"><%= truncate(paragraph.content.to_plain_text, length: 200) %></p>
                           </div>
                           <div class="flex items-center space-x-2">
                             <% if paragraph.persisted? %>
