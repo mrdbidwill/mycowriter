@@ -18,7 +18,7 @@ class ProfanityFilter
     clean_text = strip_html(text)
 
     # Obscenity doesn't provide a list of found words, but we can still use it
-    Obscenity.profane?(clean_text) ? ["inappropriate content"] : []
+    Obscenity.profane?(clean_text) ? [ "inappropriate content" ] : []
   end
 
   private
@@ -27,6 +27,6 @@ class ProfanityFilter
     # Handle ActionText::RichText objects
     text = text.to_plain_text if text.respond_to?(:to_plain_text)
     # Strip HTML tags
-    text.to_s.gsub(/<[^>]*>/, ' ').gsub(/\s+/, ' ').strip
+    text.to_s.gsub(/<[^>]*>/, " ").gsub(/\s+/, " ").strip
   end
 end
