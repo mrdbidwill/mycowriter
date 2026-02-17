@@ -120,12 +120,12 @@ export default class extends Controller {
 
   positionResults() {
     if (!this.hasResultsTarget || !this.hasInputTarget) return
-    const inputRect = this.inputTarget.getBoundingClientRect()
 
-    // Position dropdown just below the start of the textarea
-    this.resultsTarget.style.top = `${inputRect.top + window.scrollY + 30}px`
-    this.resultsTarget.style.left = `${inputRect.left + window.scrollX + 10}px`
-    this.resultsTarget.style.maxWidth = `${Math.min(inputRect.width - 20, 500)}px`
+    // Position relative to the parent container (absolute positioning)
+    // Just below the textarea start
+    this.resultsTarget.style.top = '30px'
+    this.resultsTarget.style.left = '10px'
+    this.resultsTarget.style.maxWidth = '500px'
   }
 
   handleKeyNavigation(event) {
