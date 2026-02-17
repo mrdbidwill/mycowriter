@@ -80,7 +80,10 @@ export default class extends Controller {
   }
 
   displayResults(results) {
+    console.log('displayResults called with:', results)
+
     if (!results || results.length === 0) {
+      console.log('No results, hiding')
       this.hideResults()
       return
     }
@@ -94,8 +97,10 @@ export default class extends Controller {
       </div>
     `).join('')
 
+    console.log('Setting innerHTML and removing hidden class')
     this.resultsTarget.innerHTML = html
     this.resultsTarget.classList.remove('hidden')
+    console.log('Results target classes:', this.resultsTarget.classList.toString())
 
     this.resultsTarget.querySelectorAll('.autocomplete-result-item').forEach(item => {
       item.addEventListener('click', (e) => this.selectResult(e))
