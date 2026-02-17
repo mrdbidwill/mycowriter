@@ -41,9 +41,16 @@
       <%= form_with(model: @article) do |form| %>
         <div class="space-y-6">
           <!-- Title -->
-          <div>
+          <div class="relative" data-controller="autocomplete">
             <%= form.label :title, "Article Title", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <%= form.text_field :title, class: "block w-full text-2xl font-bold border-0 border-b-2 border-gray-200 focus:border-indigo-500 focus:ring-0 px-0 py-2", placeholder: "Enter article title..." %>
+            <%= form.text_field :title,
+                class: "block w-full text-2xl font-bold border-0 border-b-2 border-gray-200 focus:border-indigo-500 focus:ring-0 px-0 py-2",
+                placeholder: "Enter article title...",
+                data: {
+                  action: "keyup->autocomplete#search blur->autocomplete#blur",
+                  autocomplete_target: "input"
+                } %>
+            <div data-autocomplete-target="results" class="autocomplete-results hidden"></div>
           </div>
 
           <!-- Description -->

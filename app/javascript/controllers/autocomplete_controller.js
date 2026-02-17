@@ -80,10 +80,7 @@ export default class extends Controller {
   }
 
   displayResults(results) {
-    console.log('displayResults called with:', results)
-
     if (!results || results.length === 0) {
-      console.log('No results, hiding')
       this.hideResults()
       return
     }
@@ -97,10 +94,8 @@ export default class extends Controller {
       </div>
     `).join('')
 
-    console.log('Setting innerHTML and removing hidden class')
     this.resultsTarget.innerHTML = html
     this.resultsTarget.classList.remove('hidden')
-    console.log('Results target classes:', this.resultsTarget.classList.toString())
 
     this.resultsTarget.querySelectorAll('.autocomplete-result-item').forEach(item => {
       item.addEventListener('click', (e) => this.selectResult(e))
@@ -121,8 +116,18 @@ export default class extends Controller {
   positionResults() {
     if (!this.hasResultsTarget || !this.hasInputTarget) return
 
-    // Position relative to the parent container (absolute positioning)
-    // Just below the textarea start
+    // IMPORTANT: Autocomplete positioning strategy
+    // The results div uses CSS position: absolute and must be placed inside
+    // a container with position: relative. The dropdown is positioned relative
+    // to that container, NOT the viewport or input field.
+    //
+    // HTML structure required:
+    //   <div class="relative" data-controller="autocomplete">
+    //     <input data-autocomplete-target="input" />
+    //     <div data-autocomplete-target="results" class="autocomplete-results"></div>
+    //   </div>
+    //
+    // Position 30px from top to appear just below input start
     this.resultsTarget.style.top = '30px'
     this.resultsTarget.style.left = '10px'
     this.resultsTarget.style.maxWidth = '500px'
