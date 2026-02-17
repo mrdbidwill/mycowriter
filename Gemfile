@@ -82,5 +82,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "minitest", "~> 5.25"  # Pin to 5.x for Rails 8.0 compatibility
+  gem "minitest", "~> 6.0"   # Pin to 5.x for Rails 8.0 compatibility
 end
