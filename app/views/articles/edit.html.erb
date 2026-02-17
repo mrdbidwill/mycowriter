@@ -54,9 +54,18 @@
           </div>
 
           <!-- Description -->
-          <div>
+          <div class="relative" data-controller="autocomplete paste-handler">
             <%= form.label :description, "Brief Description (optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
-            <%= form.rich_text_area :description, class: "prose max-w-none" %>
+            <%= form.text_area :description,
+                rows: 3,
+                class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                placeholder: "Brief summary of the article...",
+                data: {
+                  action: "paste->paste-handler#cleanPaste keyup->autocomplete#search blur->autocomplete#blur",
+                  autocomplete_target: "input"
+                } %>
+            <div data-autocomplete-target="results" class="autocomplete-results hidden"></div>
+            <p class="mt-1 text-xs text-gray-500">Type genus/species names for autocomplete suggestions</p>
           </div>
 
           <!-- Body Content with Toolbar -->
