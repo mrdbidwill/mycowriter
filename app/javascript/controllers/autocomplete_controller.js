@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["input", "results"]
   static values = {
     url: { type: String, default: "/autocomplete/taxa" },
-    minChars: { type: Number, default: 2 }
+    minChars: { type: Number, default: 3 }
   }
 
   connect() {
@@ -54,7 +54,14 @@ export default class extends Controller {
       end++
     }
 
-    return text.substring(start, end).trim()
+    const word = text.substring(start, end).trim()
+
+    // Only return word if it starts with a capital letter (genus names are always capitalized)
+    if (word.length > 0 && word[0] === word[0].toUpperCase() && word[0] !== word[0].toLowerCase()) {
+      return word
+    }
+
+    return ''
   }
 
   async fetchResults(query) {
