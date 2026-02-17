@@ -53,10 +53,10 @@
           </div>
 
           <!-- Body Content with Toolbar -->
-          <div>
+          <div data-controller="autocomplete text-formatter">
             <div class="flex items-center justify-between mb-2">
               <%= form.label :body, "Article Content", class: "block text-sm font-medium text-gray-700" %>
-              <div class="flex items-center space-x-2" data-controller="text-formatter" data-text-formatter-target="toolbar">
+              <div class="flex items-center space-x-2">
                 <button type="button" data-action="click->text-formatter#insertParagraph" class="p-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded" title="Insert paragraph break">
                   <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -70,16 +70,20 @@
                 </button>
               </div>
             </div>
-            <%= form.text_area :body,
-                rows: 20,
-                class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm",
-                placeholder: "Paste or write your article content here. Formatting will be automatically cleaned when pasting...",
-                data: {
-                  action: "paste->paste-handler#cleanPaste",
-                  text_formatter_target: "textarea"
-                } %>
+            <div class="relative">
+              <%= form.text_area :body,
+                  rows: 20,
+                  class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm",
+                  placeholder: "Paste or write your article content here. Formatting will be automatically cleaned when pasting...",
+                  data: {
+                    action: "paste->paste-handler#cleanPaste keyup->autocomplete#search blur->autocomplete#blur",
+                    text_formatter_target: "textarea",
+                    autocomplete_target: "input"
+                  } %>
+              <div data-autocomplete-target="results" class="autocomplete-results hidden"></div>
+            </div>
             <p class="mt-2 text-xs text-gray-500">
-              Tip: Paste text from any source - formatting will be cleaned automatically. Use toolbar buttons or keyboard shortcuts for formatting.
+              Tip: Paste text from any source - formatting will be cleaned automatically. Type genus/species names for autocomplete suggestions.
             </p>
           </div>
 
