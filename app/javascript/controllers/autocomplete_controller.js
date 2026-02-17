@@ -121,9 +121,10 @@ export default class extends Controller {
   positionResults() {
     if (!this.hasResultsTarget || !this.hasInputTarget) return
     const inputRect = this.inputTarget.getBoundingClientRect()
-    this.resultsTarget.style.top = `${inputRect.height}px`
-    this.resultsTarget.style.left = '0'
-    this.resultsTarget.style.width = '100%'
+    // Position at the top-left of the textarea (fixed positioning)
+    this.resultsTarget.style.top = `${inputRect.top + 40}px`
+    this.resultsTarget.style.left = `${inputRect.left}px`
+    this.resultsTarget.style.width = `${Math.min(inputRect.width, 500)}px`
   }
 
   handleKeyNavigation(event) {
