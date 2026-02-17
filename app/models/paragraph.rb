@@ -1,24 +1,25 @@
 class Paragraph < ApplicationRecord
+  ALLOWED_CONTENT_TYPES = %w[image/jpeg image/jpg image/png image/tiff image/gif text/plain application/pdf].freeze
+
   belongs_to :section
+
+  has_rich_text :content
 
   # Acts as list for reordering paragraphs within a section
   acts_as_list scope: :section
 
-  validates :content, presence: true
-
-  before_save :sanitize_content
+  validates :content, presence: true, profanity: true
+  validate :validate_attachment_content_types
 
   private
 
-  def sanitize_content
-    # Allow specific HTML tags for formatting
-    allowed_tags = %w[p b i u em strong code pre sup sub ol ul li blockquote hr br]
-    allowed_attributes = []
+  def validate_attachment_content_types
+    return unless content.body.present?
 
-    self.content = ActionController::Base.helpers.sanitize(
-      content,
-      tags: allowed_tags,
-      attributes: allowed_attributes
-    )
+    content.body.attachables.select { |a| a.is_a?(ActiveStorage::Blob) }.each do |attachment|
+      unless ALLOWED_CONTENT_TYPES.include?(attachment.content_type)
+        errors.add(:content, "contains unsupported file type: #{attachment.filename}. Allowed types: JPG, PNG, TIF, GIF, TXT, PDF")
+      end
+    end
   end
 end

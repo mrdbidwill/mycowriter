@@ -23,7 +23,7 @@
                   <div class="flex-1 min-w-0">
                     <h2 class="text-lg font-medium text-indigo-600 truncate"><%= article.title %></h2>
                     <% if article.description.present? %>
-                      <p class="mt-1 text-sm text-gray-600"><%= truncate(article.description, length: 150) %></p>
+                      <p class="mt-1 text-sm text-gray-600"><%= truncate(article.description.to_plain_text, length: 150) %></p>
                     <% end %>
                   </div>
                   <% if user_signed_in? && article.user_id == current_user.id %>

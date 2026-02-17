@@ -22,7 +22,9 @@
     </div>
 
     <% if @article.description.present? %>
-      <p class="text-lg text-gray-600 mb-4"><%= @article.description %></p>
+      <div class="prose max-w-none text-lg text-gray-600 mb-4">
+        <h2><%= @article.description %></h2>
+      </div>
     <% end %>
 
     <div class="flex items-center text-sm text-gray-500 space-x-4">
@@ -41,7 +43,9 @@
         <section class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <!-- Section Header -->
           <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h2 class="text-2xl font-semibold text-gray-900"><%= section.title %></h2>
+            <div class="prose max-w-none">
+              <h1><%= section.title %></h1>
+            </div>
             <p class="text-sm text-gray-500 mt-1"><%= pluralize(section.paragraphs.count, 'paragraph') %></p>
           </div>
 
@@ -50,7 +54,7 @@
             <% if section.paragraphs.any? %>
               <% section.paragraphs.order(position: :asc).each do |paragraph| %>
                 <div class="prose max-w-none text-gray-700">
-                  <%= mark_glossary_terms(sanitize(paragraph.content)) %>
+                  <p><%= mark_glossary_terms(paragraph.content.to_s) %></p>
                 </div>
               <% end %>
             <% else %>
