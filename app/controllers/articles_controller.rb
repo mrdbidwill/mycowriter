@@ -43,8 +43,12 @@ class ArticlesController < ApplicationController
       flash[:notice] = "✓ Article saved successfully"
       redirect_to edit_article_path(@article), status: :see_other
     else
+      flash.now[:alert] = @article.errors.full_messages.join(", ")
       render :edit, status: :unprocessable_entity
     end
+  rescue Rack::QueryParser::ParamsTooDeepError, RangeError => e
+    flash.now[:alert] = "Content is too large to save. Please reduce the size."
+    render :edit, status: :unprocessable_entity
   end
 
   def destroy

@@ -7,7 +7,7 @@ class ProfanityValidator < ActiveModel::EachValidator
 
     if ProfanityFilter.contains_profanity?(text_content)
       found_words = ProfanityFilter.find_profanity(text_content)
-      record.errors.add(attribute, "contains inappropriate language. Please keep content family-friendly.")
+      record.errors.add(attribute, "contains inappropriate language and cannot be saved. This is a family-friendly mycology project for ALL AGES — profanity is not allowed. Please remove all inappropriate language and try again.")
     end
   end
 end

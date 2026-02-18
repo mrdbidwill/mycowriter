@@ -36,6 +36,23 @@
   <!-- Main Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+    <!-- Family-Friendly Content Warning -->
+    <div class="mb-6 p-4 bg-amber-50 border-2 border-amber-400 rounded-lg">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-base font-bold text-amber-900">⚠️ FAMILY-FRIENDLY MYCOLOGY PROJECT — KEEP IT CLEAN!</h3>
+          <div class="mt-2 text-sm text-amber-800">
+            <p><strong>This is a mycology educational resource for ALL AGES.</strong> Content containing profanity or inappropriate language will be <strong>REJECTED</strong> and <strong>WILL NOT SAVE</strong>. Please keep all titles, descriptions, and article content family-friendly and professional.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Article Editor -->
     <div class="bg-white rounded-lg shadow p-6" data-controller="paste-handler">
       <%= form_with(model: @article) do |form| %>
@@ -69,7 +86,7 @@
           </div>
 
           <!-- Body Content with Toolbar -->
-          <div data-controller="autocomplete text-formatter paste-handler">
+          <div data-controller="autocomplete text-formatter paste-handler" data-text-formatter-max-length-value="16777215">
             <div class="flex items-center justify-between mb-2">
               <%= form.label :body, "Article Content", class: "block text-sm font-medium text-gray-700" %>
               <div class="flex items-center space-x-1 flex-wrap gap-y-1">
@@ -128,15 +145,18 @@
                   class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm",
                   placeholder: "Paste or write your article content here. Formatting will be automatically cleaned when pasting...",
                   data: {
-                    action: "paste->paste-handler#cleanPaste keyup->autocomplete#search blur->autocomplete#blur",
+                    action: "paste->paste-handler#cleanPaste input->text-formatter#updateCharCount keyup->autocomplete#search blur->autocomplete#blur",
                     text_formatter_target: "textarea",
                     autocomplete_target: "input"
                   } %>
               <div data-autocomplete-target="results" class="autocomplete-results hidden"></div>
             </div>
-            <p class="mt-2 text-xs text-gray-500">
-              Tip: Paste text from any source - formatting will be cleaned automatically. Type genus/species names for autocomplete suggestions.
-            </p>
+            <div class="mt-2 flex items-center justify-between">
+              <p class="text-xs text-gray-500">
+                <strong class="text-amber-700">⚠️ Keep content family-friendly!</strong> Paste text from any source - formatting will be cleaned automatically. Type genus/species names for autocomplete suggestions.
+              </p>
+              <div data-text-formatter-target="charCount" class="text-xs text-gray-500"></div>
+            </div>
           </div>
 
           <!-- Save Button -->

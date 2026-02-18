@@ -1,7 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["textarea"]
+  static targets = ["textarea", "charCount"]
+  static values = { maxLength: { type: Number, default: 16777215 } }
+
+  connect() {
+    this.updateCharCount()
+  }
 
   insertParagraph() {
     const textarea = this.textareaTarget
@@ -130,5 +135,30 @@ export default class extends Controller {
 
     textarea.focus()
     textarea.dispatchEvent(new Event('input', { bubbles: true }))
+  }
+
+  updateCharCount() {
+    if (!this.hasCharCountTarget) return
+
+    const length = this.textareaTarget.value.length
+    const max = this.maxLengthValue
+    const remaining = max - length
+    const percent = (length / max) * 100
+
+    this.charCountTarget.textContent = `${length.toLocaleString()} / ${max.toLocaleString()} characters`
+
+    // Change color based on usage
+    if (percent >= 95) {
+      this.charCountTarget.className = 'text-xs font-medium text-red-600'
+    } else if (percent >= 80) {
+      this.charCountTarget.className = 'text-xs font-medium text-yellow-600'
+    } else {
+      this.charCountTarget.className = 'text-xs text-gray-500'
+    }
+
+    // Warn if exceeding limit
+    if (length > max) {
+      alert(`Content is too large (${length.toLocaleString()} characters). Maximum is ${max.toLocaleString()} characters. Please reduce the content size.`)
+    }
   }
 }
