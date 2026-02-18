@@ -115,6 +115,10 @@ export default class extends Controller {
 
   wrapSelection(before, after) {
     const textarea = this.textareaTarget
+
+    // Ensure textarea has focus first
+    textarea.focus()
+
     const start = textarea.selectionStart
     const end = textarea.selectionEnd
     const value = textarea.value
@@ -133,7 +137,6 @@ export default class extends Controller {
       textarea.setSelectionRange(start + before.length, end + before.length)
     }
 
-    textarea.focus()
     textarea.dispatchEvent(new Event('input', { bubbles: true }))
   }
 

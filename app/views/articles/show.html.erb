@@ -39,7 +39,7 @@
   <% if @article.body.present? %>
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
       <div class="px-6 py-8 prose max-w-none" data-controller="glossary">
-        <%= simple_format(mark_glossary_terms(@article.body), {}, sanitize: false) %>
+        <%= mark_glossary_terms(markdown(@article.body)) %>
       </div>
     </div>
   <% else %>
