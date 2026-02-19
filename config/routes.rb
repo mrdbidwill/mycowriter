@@ -38,6 +38,9 @@ Rails.application.routes.draw do
   # API key management
   resources :api_keys, only: [ :index, :create, :destroy ]
 
+  # API Documentation
+  get "api/docs", to: "api_docs#index", as: :api_docs
+
   # Public API v1 endpoints
   namespace :api do
     namespace :v1 do

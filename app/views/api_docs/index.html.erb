@@ -1,0 +1,375 @@
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+  <h1 class="text-4xl font-bold mb-2">MycoWriter API Documentation</h1>
+  <p class="text-gray-600 mb-8">Version 1.0 - RESTful API for fungal taxonomy and mycology glossary</p>
+
+  <!-- Quick Start -->
+  <section class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Quick Start</h2>
+    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+      <li><%= link_to "Create an account", new_user_registration_path, class: "text-blue-600 hover:underline" %> or <%= link_to "sign in", new_user_session_path, class: "text-blue-600 hover:underline" %></li>
+      <li><%= link_to "Generate an API key", api_keys_path, class: "text-blue-600 hover:underline" %> from your dashboard</li>
+      <li>Include your API key in the <code class="bg-white px-2 py-1 rounded">Authorization</code> header</li>
+      <li>Start making requests to the endpoints below</li>
+    </ol>
+  </section>
+
+  <!-- Authentication -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Authentication</h2>
+    <p class="text-gray-700 mb-4">All API endpoints require authentication using an API key. Include your key in the Authorization header:</p>
+    <div class="bg-gray-900 text-gray-100 rounded-lg p-4 mb-4 overflow-x-auto">
+      <code>Authorization: Bearer YOUR_API_KEY</code>
+    </div>
+    <p class="text-sm text-gray-600">You can <%= link_to "manage your API keys", api_keys_path, class: "text-blue-600 hover:underline" %> from your account dashboard.</p>
+  </section>
+
+  <!-- Rate Limiting -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Rate Limiting</h2>
+    <p class="text-gray-700 mb-4">API requests are rate limited to ensure fair usage:</p>
+    <ul class="list-disc list-inside space-y-2 text-gray-700 mb-4">
+      <li><strong>Authenticated requests:</strong> 100 requests per hour per API key</li>
+      <li><strong>Unauthenticated requests:</strong> 20 requests per hour per IP address</li>
+    </ul>
+    <p class="text-gray-700 mb-2">Rate limit information is included in response headers:</p>
+    <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+      <code>X-RateLimit-Limit: 100<br>
+X-RateLimit-Remaining: 95<br>
+X-RateLimit-Reset: 1771466400</code>
+    </div>
+  </section>
+
+  <!-- Base URL -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Base URL</h2>
+    <div class="bg-gray-900 text-gray-100 rounded-lg p-4">
+      <code><%= request.base_url %>/api/v1</code>
+    </div>
+  </section>
+
+  <!-- Endpoints -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-6">Endpoints</h2>
+
+    <!-- Autocomplete Taxa -->
+    <div class="border border-gray-200 rounded-lg p-6 mb-6">
+      <div class="flex items-center mb-4">
+        <span class="bg-green-500 text-white px-3 py-1 rounded font-mono text-sm mr-3">GET</span>
+        <code class="text-lg font-mono">/api/v1/autocomplete/taxa</code>
+      </div>
+      <p class="text-gray-700 mb-4">Search and autocomplete fungal taxa names from the MycoBank database.</p>
+
+      <h4 class="font-semibold mb-2">Parameters</h4>
+      <table class="w-full mb-4 border border-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="border border-gray-300 px-4 py-2 text-left">Parameter</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Type</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Required</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border border-gray-300 px-4 py-2 font-mono">q</td>
+            <td class="border border-gray-300 px-4 py-2">string</td>
+            <td class="border border-gray-300 px-4 py-2">Yes</td>
+            <td class="border border-gray-300 px-4 py-2">Search query (taxon name)</td>
+          </tr>
+          <tr>
+            <td class="border border-gray-300 px-4 py-2 font-mono">limit</td>
+            <td class="border border-gray-300 px-4 py-2">integer</td>
+            <td class="border border-gray-300 px-4 py-2">No</td>
+            <td class="border border-gray-300 px-4 py-2">Maximum results (default: 20, max: 100)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 class="font-semibold mb-2">Example Request</h4>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 mb-4 overflow-x-auto">
+        <code>curl -H "Authorization: Bearer YOUR_API_KEY" \<br>
+  "<%= request.base_url %>/api/v1/autocomplete/taxa?q=Agaricus&limit=3"</code>
+      </div>
+
+      <h4 class="font-semibold mb-2">Example Response</h4>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+        <pre><code>[
+  {
+    "value": "Agaricus",
+    "label": "Agaricus (gen.)",
+    "authors": "Linnaeus"
+  },
+  {
+    "value": "Agaricus campestris",
+    "label": "Agaricus campestris (sp.)",
+    "authors": "L."
+  }
+]</code></pre>
+      </div>
+    </div>
+
+    <!-- Glossary Definition -->
+    <div class="border border-gray-200 rounded-lg p-6 mb-6">
+      <div class="flex items-center mb-4">
+        <span class="bg-green-500 text-white px-3 py-1 rounded font-mono text-sm mr-3">GET</span>
+        <code class="text-lg font-mono">/api/v1/glossary/definition</code>
+      </div>
+      <p class="text-gray-700 mb-4">Retrieve the definition of a mycology term from Wikipedia's Glossary of Mycology.</p>
+
+      <h4 class="font-semibold mb-2">Parameters</h4>
+      <table class="w-full mb-4 border border-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="border border-gray-300 px-4 py-2 text-left">Parameter</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Type</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Required</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border border-gray-300 px-4 py-2 font-mono">term</td>
+            <td class="border border-gray-300 px-4 py-2">string</td>
+            <td class="border border-gray-300 px-4 py-2">Yes</td>
+            <td class="border border-gray-300 px-4 py-2">The mycology term to look up</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 class="font-semibold mb-2">Example Request</h4>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 mb-4 overflow-x-auto">
+        <code>curl -H "Authorization: Bearer YOUR_API_KEY" \<br>
+  "<%= request.base_url %>/api/v1/glossary/definition?term=basidiospore"</code>
+      </div>
+
+      <h4 class="font-semibold mb-2">Example Response</h4>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+        <pre><code>{
+  "term": "basidiospore",
+  "definition": "A propagative sexual spore produced on a basidium..."
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- Glossary All Terms -->
+    <div class="border border-gray-200 rounded-lg p-6 mb-6">
+      <div class="flex items-center mb-4">
+        <span class="bg-green-500 text-white px-3 py-1 rounded font-mono text-sm mr-3">GET</span>
+        <code class="text-lg font-mono">/api/v1/glossary/terms</code>
+      </div>
+      <p class="text-gray-700 mb-4">Retrieve all available mycology terms and their definitions.</p>
+
+      <h4 class="font-semibold mb-2">Parameters</h4>
+      <p class="text-gray-600 mb-4">None</p>
+
+      <h4 class="font-semibold mb-2">Example Request</h4>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 mb-4 overflow-x-auto">
+        <code>curl -H "Authorization: Bearer YOUR_API_KEY" \<br>
+  "<%= request.base_url %>/api/v1/glossary/terms"</code>
+      </div>
+
+      <h4 class="font-semibold mb-2">Example Response</h4>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+        <pre><code>{
+  "basidiospore": "A propagative sexual spore...",
+  "hypha": "A long, branching filamentous structure...",
+  "mycelium": "The vegetative part of a fungus..."
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Examples -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Code Examples</h2>
+
+    <!-- JavaScript/Node.js -->
+    <div class="mb-6">
+      <h3 class="text-xl font-semibold mb-2">JavaScript (Node.js)</h3>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+        <pre><code>const API_KEY = 'YOUR_API_KEY';
+const BASE_URL = '<%= request.base_url %>/api/v1';
+
+// Autocomplete taxa
+async function searchTaxa(query) {
+  const response = await fetch(
+    `${BASE_URL}/autocomplete/taxa?q=${encodeURIComponent(query)}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`
+      }
+    }
+  );
+  const data = await response.json();
+  return data;
+}
+
+// Get glossary definition
+async function getDefinition(term) {
+  const response = await fetch(
+    `${BASE_URL}/glossary/definition?term=${encodeURIComponent(term)}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`
+      }
+    }
+  );
+  const data = await response.json();
+  return data;
+}
+
+// Usage
+searchTaxa('Agaricus').then(console.log);
+getDefinition('basidiospore').then(console.log);</code></pre>
+      </div>
+    </div>
+
+    <!-- Python -->
+    <div class="mb-6">
+      <h3 class="text-xl font-semibold mb-2">Python</h3>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+        <pre><code>import requests
+
+API_KEY = 'YOUR_API_KEY'
+BASE_URL = '<%= request.base_url %>/api/v1'
+
+headers = {
+    'Authorization': f'Bearer {API_KEY}'
+}
+
+# Autocomplete taxa
+def search_taxa(query, limit=20):
+    response = requests.get(
+        f'{BASE_URL}/autocomplete/taxa',
+        params={'q': query, 'limit': limit},
+        headers=headers
+    )
+    return response.json()
+
+# Get glossary definition
+def get_definition(term):
+    response = requests.get(
+        f'{BASE_URL}/glossary/definition',
+        params={'term': term},
+        headers=headers
+    )
+    return response.json()
+
+# Usage
+results = search_taxa('Agaricus', limit=5)
+print(results)
+
+definition = get_definition('basidiospore')
+print(definition)</code></pre>
+      </div>
+    </div>
+
+    <!-- Ruby -->
+    <div class="mb-6">
+      <h3 class="text-xl font-semibold mb-2">Ruby</h3>
+      <div class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto">
+        <pre><code>require 'net/http'
+require 'json'
+require 'uri'
+
+API_KEY = 'YOUR_API_KEY'
+BASE_URL = '<%= request.base_url %>/api/v1'
+
+# Autocomplete taxa
+def search_taxa(query, limit = 20)
+  uri = URI("#{BASE_URL}/autocomplete/taxa")
+  uri.query = URI.encode_www_form(q: query, limit: limit)
+
+  request = Net::HTTP::Get.new(uri)
+  request['Authorization'] = "Bearer #{API_KEY}"
+
+  response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+    http.request(request)
+  end
+
+  JSON.parse(response.body)
+end
+
+# Get glossary definition
+def get_definition(term)
+  uri = URI("#{BASE_URL}/glossary/definition")
+  uri.query = URI.encode_www_form(term: term)
+
+  request = Net::HTTP::Get.new(uri)
+  request['Authorization'] = "Bearer #{API_KEY}"
+
+  response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+    http.request(request)
+  end
+
+  JSON.parse(response.body)
+end
+
+# Usage
+results = search_taxa('Agaricus', 5)
+puts results
+
+definition = get_definition('basidiospore')
+puts definition</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Error Responses -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Error Responses</h2>
+    <p class="text-gray-700 mb-4">The API uses standard HTTP status codes and returns error details in JSON format:</p>
+
+    <div class="space-y-4">
+      <div class="border-l-4 border-red-500 pl-4">
+        <h4 class="font-semibold">400 Bad Request</h4>
+        <p class="text-sm text-gray-600 mb-2">Missing or invalid parameters</p>
+        <div class="bg-gray-900 text-gray-100 rounded p-2 text-sm">
+          <code>{"error": "Query parameter 'q' is required"}</code>
+        </div>
+      </div>
+
+      <div class="border-l-4 border-red-500 pl-4">
+        <h4 class="font-semibold">401 Unauthorized</h4>
+        <p class="text-sm text-gray-600 mb-2">Missing, invalid, or expired API key</p>
+        <div class="bg-gray-900 text-gray-100 rounded p-2 text-sm">
+          <code>{"error": "Invalid API key"}</code>
+        </div>
+      </div>
+
+      <div class="border-l-4 border-yellow-500 pl-4">
+        <h4 class="font-semibold">404 Not Found</h4>
+        <p class="text-sm text-gray-600 mb-2">Resource not found</p>
+        <div class="bg-gray-900 text-gray-100 rounded p-2 text-sm">
+          <code>{"error": "Definition not found", "term": "unknownterm"}</code>
+        </div>
+      </div>
+
+      <div class="border-l-4 border-orange-500 pl-4">
+        <h4 class="font-semibold">429 Too Many Requests</h4>
+        <p class="text-sm text-gray-600 mb-2">Rate limit exceeded</p>
+        <div class="bg-gray-900 text-gray-100 rounded p-2 text-sm">
+          <code>{"error": "Rate limit exceeded. Try again later."}</code>
+        </div>
+      </div>
+
+      <div class="border-l-4 border-red-700 pl-4">
+        <h4 class="font-semibold">500 Internal Server Error</h4>
+        <p class="text-sm text-gray-600 mb-2">Server error</p>
+        <div class="bg-gray-900 text-gray-100 rounded p-2 text-sm">
+          <code>{"error": "Internal server error"}</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Support</h2>
+    <p class="text-gray-700">
+      For API support, questions, or to report issues, please contact us at
+      <a href="mailto:support@mycowriter.com" class="text-blue-600 hover:underline">support@mycowriter.com</a>
+      or visit our <%= link_to "contact page", pages_contact_path, class: "text-blue-600 hover:underline" %>.
+    </p>
+  </section>
+</div>
