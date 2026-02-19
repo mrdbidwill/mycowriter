@@ -35,6 +35,9 @@ gem "obscenity"  # Profanity filtering
 # Load environment variables from .env file
 gem "dotenv-rails"
 
+# Rate limiting for API endpoints
+gem "rack-attack"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
