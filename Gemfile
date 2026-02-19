@@ -32,9 +32,6 @@ gem "acts_as_list"  # Reordering for sections and paragraphs
 # Content moderation
 gem "obscenity"  # Profanity filtering
 
-# Markdown parsing
-gem "redcarpet"  # Markdown to HTML conversion
-
 # Load environment variables from .env file
 gem "dotenv-rails"
 

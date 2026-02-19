@@ -38,8 +38,8 @@
   <!-- Article Content -->
   <% if @article.body.present? %>
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      <div class="px-6 py-8 prose max-w-none" data-controller="glossary">
-        <%= mark_glossary_terms(markdown(@article.body)) %>
+      <div class="px-6 py-8 prose max-w-none trix-content" data-controller="glossary">
+        <%= @article.body %>
       </div>
     </div>
   <% else %>

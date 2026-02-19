@@ -68,78 +68,13 @@
             <p class="mt-1 text-xs text-gray-500">Type genus/species names for autocomplete suggestions</p>
           </div>
 
-          <!-- Body Content with Toolbar -->
-          <div data-controller="autocomplete text-formatter paste-handler" data-text-formatter-max-length-value="16777215">
-            <div class="flex items-center justify-between mb-2">
-              <%= form.label :body, "Article Content", class: "block text-sm font-medium text-gray-700" %>
-              <div class="flex items-center space-x-1 flex-wrap gap-y-1">
-                <!-- Headings -->
-                <button type="button" data-action="click->text-formatter#makeH1" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded text-sm font-bold" title="Heading 1">
-                  H1
-                </button>
-                <button type="button" data-action="click->text-formatter#makeH2" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded text-sm font-bold" title="Heading 2">
-                  H2
-                </button>
-                <button type="button" data-action="click->text-formatter#makeH3" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded text-sm font-bold" title="Heading 3">
-                  H3
-                </button>
-                <span class="text-gray-300">|</span>
-
-                <!-- Text formatting -->
-                <button type="button" data-action="click->text-formatter#makeBold" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded font-bold" title="Bold">
-                  B
-                </button>
-                <button type="button" data-action="click->text-formatter#makeItalic" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded italic" title="Italic">
-                  I
-                </button>
-                <button type="button" data-action="click->text-formatter#makeUnderline" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded underline" title="Underline">
-                  U
-                </button>
-                <button type="button" data-action="click->text-formatter#makeStrikethrough" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded line-through" title="Strikethrough">
-                  S
-                </button>
-                <span class="text-gray-300">|</span>
-
-                <!-- Lists -->
-                <button type="button" data-action="click->text-formatter#makeBulletList" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded" title="Bullet list">
-                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
-                <button type="button" data-action="click->text-formatter#makeNumberedList" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded text-sm" title="Numbered list">
-                  1.
-                </button>
-                <span class="text-gray-300">|</span>
-
-                <!-- Link & Paragraph -->
-                <button type="button" data-action="click->text-formatter#insertLink" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded" title="Insert link">
-                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                  </svg>
-                </button>
-                <button type="button" data-action="click->text-formatter#insertParagraph" class="px-2 py-1 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded" title="Insert paragraph break">
-                  ¶
-                </button>
-              </div>
-            </div>
-            <div class="relative">
-              <%= form.text_area :body,
-                  rows: 20,
-                  class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm",
-                  placeholder: "Paste or write your article content here. Formatting will be automatically cleaned when pasting...",
-                  data: {
-                    action: "paste->paste-handler#cleanPaste input->text-formatter#updateCharCount keyup->autocomplete#search blur->autocomplete#blur",
-                    text_formatter_target: "textarea",
-                    autocomplete_target: "input"
-                  } %>
-              <div data-autocomplete-target="results" class="autocomplete-results hidden"></div>
-            </div>
-            <div class="mt-2 flex items-center justify-between">
-              <p class="text-xs text-gray-500">
-                Tip: Paste text from any source - formatting will be cleaned automatically. Type genus/species names for autocomplete suggestions.
-              </p>
-              <div data-text-formatter-target="charCount" class="text-xs text-gray-500"></div>
-            </div>
+          <!-- Body Content with Trix WYSIWYG Editor -->
+          <div data-controller="trix-paste">
+            <%= form.label :body, "Article Content", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.rich_text_area :body, class: "trix-content", data: { trix_paste_target: "editor" } %>
+            <p class="mt-2 text-xs text-gray-500">
+              Use the toolbar above to format your text. Bold, italic, headings, lists, and links are all supported. Paste from PDFs works - line breaks are cleaned automatically.
+            </p>
           </div>
 
           <!-- Save Button -->

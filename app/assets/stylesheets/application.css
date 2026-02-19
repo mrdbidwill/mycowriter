@@ -43,3 +43,62 @@
 .autocomplete-results.hidden {
   display: none;
 }
+
+/* Prose/Article content styles */
+.prose h1 {
+  font-size: 2.25em;
+  font-weight: 800;
+  line-height: 1.1111;
+  margin-top: 0;
+  margin-bottom: 0.8888em;
+  color: #111827;
+}
+
+.prose h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.3333;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  color: #111827;
+}
+
+.prose h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  color: #111827;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.prose ul, .prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose a {
+  color: #4f46e5;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  color: #4338ca;
+}
