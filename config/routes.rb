@@ -35,6 +35,21 @@ Rails.application.routes.draw do
   # Autocomplete endpoint for mb_lists
   get "autocomplete/taxa", to: "autocomplete#taxa"
 
+  # API key management
+  resources :api_keys, only: [ :index, :create, :destroy ]
+
+  # Public API v1 endpoints
+  namespace :api do
+    namespace :v1 do
+      # Autocomplete endpoint for fungal taxa
+      get "autocomplete/taxa", to: "autocomplete#taxa"
+
+      # Glossary endpoints
+      get "glossary/definition", to: "glossary#definition"
+      get "glossary/terms", to: "glossary#terms"
+    end
+  end
+
   # Defines the root path route ("/")
   root "articles#index"
 end

@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   # Associations
   has_many :articles, dependent: :destroy
+  has_many :api_keys, dependent: :destroy
 
   # Validations
   validates :display_name, presence: true, length: { maximum: 100 }

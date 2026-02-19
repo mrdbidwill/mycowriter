@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_18_005832) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_19_012846) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -47,6 +47,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_005832) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token", null: false
+    t.string "name"
+    t.datetime "last_used_at"
+    t.datetime "expires_at"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_api_keys_on_token", unique: true
+    t.index ["user_id"], name: "index_api_keys_on_user_id"
   end
 
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -111,6 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_005832) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "api_keys", "users"
   add_foreign_key "paragraphs", "sections"
   add_foreign_key "sections", "articles"
 end

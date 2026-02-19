@@ -1,0 +1,108 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">API Keys</h1>
+
+  <% if flash[:notice] %>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+
+  <% if flash[:alert] %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <div class="bg-white shadow rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-semibold mb-4">Create New API Key</h2>
+    <p class="text-gray-600 mb-4">API keys allow you to access the MycoWriter API from external applications.</p>
+
+    <%= form_with model: ApiKey.new, url: api_keys_path, class: "space-y-4" do |f| %>
+      <div>
+        <%= f.label :name, "Key Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :name, placeholder: "e.g., My App or Production Server", class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", required: true %>
+        <p class="text-xs text-gray-500 mt-1">Give this key a descriptive name to help you remember what it's for.</p>
+      </div>
+
+      <div>
+        <%= f.label :expires_at, "Expiration Date (Optional)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.datetime_local_field :expires_at, class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="text-xs text-gray-500 mt-1">Leave blank for keys that don't expire.</p>
+      </div>
+
+      <%= f.submit "Create API Key", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer" %>
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Your API Keys</h2>
+
+    <% if @api_keys.empty? %>
+      <p class="text-gray-500">You don't have any API keys yet. Create one above to get started.</p>
+    <% else %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Token</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Used</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expires</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @api_keys.each do |api_key| %>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <%= api_key.name %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                  <% if api_key.created_at > 1.minute.ago %>
+                    <code class="bg-yellow-50 px-2 py-1 rounded"><%= api_key.token %></code>
+                    <span class="text-xs text-yellow-600 block mt-1">⚠️ Copy this now! It won't be shown again.</span>
+                  <% else %>
+                    <%= api_key.token[0..7] %>...
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <% if api_key.valid_key? %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                  <% else %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= api_key.last_used_at ? time_ago_in_words(api_key.last_used_at) + " ago" : "Never" %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= api_key.expires_at ? api_key.expires_at.strftime("%Y-%m-%d %H:%M") : "Never" %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <% if api_key.active? %>
+                    <%= button_to "Revoke", api_key_path(api_key), method: :delete, class: "text-red-600 hover:text-red-900", data: { turbo_confirm: "Are you sure you want to revoke this API key?" } %>
+                  <% else %>
+                    <span class="text-gray-400">Revoked</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <h3 class="text-lg font-semibold mb-2">API Documentation</h3>
+    <p class="text-sm text-gray-700 mb-2">Use your API key to access these endpoints:</p>
+    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+      <li><code class="bg-white px-2 py-1 rounded">GET /api/v1/autocomplete/taxa?q=Agaricus</code> - Autocomplete fungal taxa</li>
+      <li><code class="bg-white px-2 py-1 rounded">GET /api/v1/glossary/definition?term=basidiospore</code> - Get glossary definition</li>
+      <li><code class="bg-white px-2 py-1 rounded">GET /api/v1/glossary/terms</code> - Get all glossary terms</li>
+    </ul>
+    <p class="text-sm text-gray-700 mt-3">Include your API key in the Authorization header:</p>
+    <code class="block bg-white px-3 py-2 rounded mt-2 text-xs">Authorization: Bearer YOUR_API_KEY</code>
+  </div>
+</div>
