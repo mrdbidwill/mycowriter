@@ -26,7 +26,7 @@ class Article < ApplicationRecord
     html = html.gsub(/([^>])<br\s*\/?>\s*([^<])/i, '\1 \2')
 
     # Collapse excessive <br> tags (3+ in a row to 2)
-    html = html.gsub(/(<br\s*\/?>\s*){3,}/i, '<br><br>')
+    html = html.gsub(/(<br\s*\/?>\s*){3,}/i, "<br><br>")
 
     # Update the body with cleaned content
     self.body = html

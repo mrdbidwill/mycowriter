@@ -35,7 +35,7 @@ class ProfanityFilter
     # Common in scientific names
     "pubescens",         # Hairy/downy
     "tinctorius",        # Used for dyeing
-    "edulis",            # Edible
+    "edulis"            # Edible
   ].freeze
 
   def self.contains_profanity?(text)
