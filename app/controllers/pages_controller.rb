@@ -4,4 +4,7 @@ class PagesController < ApplicationController
 
   def terms_of_service
   end
+
+  def gem_docs
+  end
 end

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "pages/contact"
   get "pages/terms_of_service"
+  get "docs", to: "pages#gem_docs"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
