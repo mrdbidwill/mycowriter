@@ -56,9 +56,33 @@ export default class extends Controller {
 
     const word = text.substring(start, end).trim()
 
-    // Only return word if it starts with a capital letter (genus names are always capitalized)
+    // If current word starts with capital letter, search for genus
     if (word.length > 0 && word[0] === word[0].toUpperCase() && word[0] !== word[0].toLowerCase()) {
       return word
+    }
+
+    // If current word is lowercase, check if previous word is capitalized (genus)
+    // If so, search for "Genus species" binomial
+    if (word.length > 0 && word[0] === word[0].toLowerCase()) {
+      // Find the previous word
+      let prevEnd = start - 1
+      while (prevEnd > 0 && /\s/.test(text[prevEnd])) {
+        prevEnd--
+      }
+
+      if (prevEnd > 0) {
+        let prevStart = prevEnd
+        while (prevStart > 0 && !/\s/.test(text[prevStart - 1])) {
+          prevStart--
+        }
+
+        const prevWord = text.substring(prevStart, prevEnd + 1).trim()
+
+        // If previous word starts with capital, combine with current word
+        if (prevWord.length > 0 && prevWord[0] === prevWord[0].toUpperCase() && prevWord[0] !== prevWord[0].toLowerCase()) {
+          return prevWord + ' ' + word
+        }
+      }
     }
 
     return ''
@@ -205,16 +229,45 @@ export default class extends Controller {
     const end = input.selectionEnd
     const text = input.value
 
+    // Find start of current word
     let wordStart = start
     while (wordStart > 0 && !/\s/.test(text[wordStart - 1])) {
       wordStart--
     }
 
-    const before = text.substring(0, wordStart)
+    // Check if we're replacing a species epithet (lowercase after genus)
+    const currentWord = text.substring(wordStart, start).trim()
+    const isLowercaseWord = currentWord.length > 0 && currentWord[0] === currentWord[0].toLowerCase()
+
+    let replaceStart = wordStart
+
+    if (isLowercaseWord) {
+      // Find start of previous word (genus)
+      let prevEnd = wordStart - 1
+      while (prevEnd > 0 && /\s/.test(text[prevEnd])) {
+        prevEnd--
+      }
+
+      if (prevEnd > 0) {
+        let prevStart = prevEnd
+        while (prevStart > 0 && !/\s/.test(text[prevStart - 1])) {
+          prevStart--
+        }
+
+        const prevWord = text.substring(prevStart, prevEnd + 1).trim()
+
+        // If previous word is capitalized (genus), replace from genus start
+        if (prevWord.length > 0 && prevWord[0] === prevWord[0].toUpperCase() && prevWord[0] !== prevWord[0].toLowerCase()) {
+          replaceStart = prevStart
+        }
+      }
+    }
+
+    const before = text.substring(0, replaceStart)
     const after = text.substring(end)
     input.value = before + value + ' ' + after
 
-    const newPos = wordStart + value.length + 1
+    const newPos = replaceStart + value.length + 1
     input.setSelectionRange(newPos, newPos)
     input.focus()
 
