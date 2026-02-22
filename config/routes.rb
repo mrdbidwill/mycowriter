@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "pages/contact"
   get "pages/terms_of_service"
   get "docs", to: "pages#gem_docs"
+  get "demo", to: "pages#demo"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -33,8 +34,10 @@ Rails.application.routes.draw do
     end
   end
 
-  # Autocomplete endpoint for mb_lists
+  # Autocomplete endpoints for mb_lists
   get "autocomplete/taxa", to: "autocomplete#taxa"
+  get "autocomplete/genera", to: "autocomplete#genera", as: :genera_autocomplete
+  get "autocomplete/species", to: "autocomplete#species", as: :species_autocomplete
 
   # API key management
   resources :api_keys, only: [ :index, :create, :destroy ]

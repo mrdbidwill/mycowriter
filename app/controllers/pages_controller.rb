@@ -7,4 +7,7 @@ class PagesController < ApplicationController
 
   def gem_docs
   end
+
+  def demo
+  end
 end
