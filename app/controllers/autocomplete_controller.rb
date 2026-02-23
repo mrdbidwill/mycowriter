@@ -10,7 +10,25 @@ class AutocompleteController < ApplicationController
       return
     end
 
-    results = MbList.search_by_name(query).limit(20).pluck(:taxon_name, :rank_name, :authors)
+    # Determine if searching for genus or species
+    # If query has space, search for species; otherwise search for genus only
+    if query.include?(' ')
+      # Search for species (binomial: "Genus species")
+      results = MbList.where("taxon_name LIKE ?", "#{sanitize_sql_like(query)}%")
+                      .where("rank_name IN ('sp.', 'Species') OR rank_name LIKE '%sp%'")
+                      .where(name_status: 'Legitimate')
+                      .order(:taxon_name)
+                      .limit(20)
+                      .pluck(:taxon_name, :rank_name, :authors)
+    else
+      # Search for genus only (single capitalized word)
+      results = MbList.where("taxon_name LIKE ?", "#{sanitize_sql_like(query.capitalize)}%")
+                      .where(rank_name: 'gen.')
+                      .where(name_status: 'Legitimate')
+                      .order(:taxon_name)
+                      .limit(20)
+                      .pluck(:taxon_name, :rank_name, :authors)
+    end
 
     formatted_results = results.map do |name, rank, authors|
       {
