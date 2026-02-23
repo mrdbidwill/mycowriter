@@ -22,7 +22,7 @@ module Api
         # Use Rails cache to track requests
         cache_key = "rate_limit:api_key:#{current_api_key.id}:#{Time.now.to_i / period}"
         count = Rails.cache.read(cache_key) || 0
-        remaining = [limit - count, 0].max
+        remaining = [ limit - count, 0 ].max
 
         # Calculate reset time (next hour boundary)
         now = Time.now.to_i

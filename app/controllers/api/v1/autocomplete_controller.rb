@@ -24,7 +24,7 @@ module Api
       #   ]
       def taxa
         query = params[:q].to_s.strip
-        limit = [params[:limit].to_i, 100].min
+        limit = [ params[:limit].to_i, 100 ].min
         limit = 20 if limit <= 0
 
         if query.blank?

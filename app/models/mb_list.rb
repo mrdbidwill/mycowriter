@@ -7,7 +7,7 @@ class MbList < ApplicationRecord
   scope :search_by_name, ->(query) {
     where("taxon_name LIKE ?", "#{sanitize_sql_like(query.capitalize)}%")
       .where("rank_name IN ('gen.', 'sp.', 'Genus', 'Species') OR rank_name LIKE '%gen%' OR rank_name LIKE '%sp%'")
-      .where(name_status: 'Legitimate')
+      .where(name_status: "Legitimate")
       .limit(20)
       .order(:taxon_name)
   }
