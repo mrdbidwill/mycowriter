@@ -33,6 +33,7 @@ class AutocompleteController < ApplicationController
 
     results = MbList.where("taxon_name LIKE ?", "#{sanitize_sql_like(query.capitalize)}%")
                     .where("rank_name IN ('gen.', 'Genus') OR rank_name LIKE '%gen%'")
+                    .where(name_status: 'Legitimate')
                     .order(:taxon_name)
                     .limit(20)
                     .pluck(:taxon_name)
@@ -50,6 +51,7 @@ class AutocompleteController < ApplicationController
 
     results = MbList.where("taxon_name LIKE ?", "%#{sanitize_sql_like(query)}%")
                     .where("rank_name IN ('sp.', 'Species') OR rank_name LIKE '%sp%'")
+                    .where(name_status: 'Legitimate')
                     .order(:taxon_name)
                     .limit(20)
                     .pluck(:taxon_name)
