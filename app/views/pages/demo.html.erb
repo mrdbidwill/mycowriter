@@ -84,6 +84,9 @@ rails generate mycowriter:install</code></pre>
       <div>
         <h3 class="text-xl font-semibold mb-2 text-gray-900">3. Mount the engine in routes.rb</h3>
         <pre class="bg-gray-900 text-gray-100 p-4 rounded overflow-x-auto text-sm"><code>mount Mycowriter::Engine => "/mycowriter"</code></pre>
+        <p class="mt-2 text-sm text-gray-600">
+          This mounts the Mycowriter engine, adding its autocomplete API endpoints (<code class="bg-gray-100 px-1 py-0.5 rounded">/mycowriter/autocomplete/genera</code> and <code class="bg-gray-100 px-1 py-0.5 rounded">/mycowriter/autocomplete/species</code>) to your application's routes.
+        </p>
       </div>
 
       <div>
