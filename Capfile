@@ -12,7 +12,7 @@ install_plugin Capistrano::SCM::Git
 require "capistrano/rbenv"
 require "capistrano/bundler"
 require "capistrano/rails/assets"
-require "capistrano/rails/migrations"
+# require "capistrano/rails/migrations"  # Disabled: mycowriter uses shared mrdbid database, no schema management
 # require "capistrano/puma"  # Disabled: Using systemd for Puma management
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
