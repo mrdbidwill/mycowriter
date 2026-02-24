@@ -39,7 +39,7 @@ gem "dotenv-rails"
 gem "rack-attack"
 
 # Mycowriter gem - Genus/species autocomplete (created by mrdbid)
-gem "mycowriter", path: "/Users/wrj/Documents/www/public_html/mycowriter_gem/mycowriter"
+gem "mycowriter", "~> 0.1.11"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
