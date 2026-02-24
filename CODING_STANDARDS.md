@@ -173,4 +173,52 @@ When creating a new standard document, include:
 5. **History** - When/why this became a standard
 6. **Checklist** - Quick verification steps
 
+### 5. Mycowriter Gem Usage Pattern
+**Status:** MANDATORY
+**Created:** 2026-02-24
+
+**Summary:** This website MUST use the actual mycowriter gem (not duplicate implementations). The gem is a Rails engine that provides genus/species autocomplete via the `mycowriter-autocomplete` Stimulus controller and engine-mounted routes at `/mycowriter/autocomplete/*`. This is a promotional website for the gem—demonstrating duplicate/different code defeats the purpose and misleads potential users.
+
+**Why:** This is a promotional website for the mycowriter gem. Showing different code than what's in the gem misleads developers and damages trust. The gem is properly tested and used in production on mrdbid.com—use it as-is.
+
+**The Correct Pattern:**
+
+**Gemfile:**
+```ruby
+gem 'mycowriter', '~> 0.1.8'    # Genus/species autocomplete
+```
+
+**config/routes.rb:**
+```ruby
+mount Mycowriter::Engine => "/mycowriter"
+```
+
+**app/javascript/controllers/application.js:**
+```javascript
+import MycowriterAutocomplete from "mycowriter/autocomplete_controller"
+application.register("mycowriter-autocomplete", MycowriterAutocomplete)
+```
+
+**Views:**
+```erb
+<div data-controller="mycowriter-autocomplete"
+     data-mycowriter-autocomplete-url-value="<%= mycowriter.genera_autocomplete_path %>"
+     data-mycowriter-autocomplete-require-uppercase-value="true">
+  <input data-mycowriter-autocomplete-target="input" minlength="4" />
+  <ul data-mycowriter-autocomplete-target="dropdown"></ul>
+  <div data-mycowriter-autocomplete-target="list"></div>
+</div>
+```
+
+**Locations:**
+- Gemfile (gem declaration)
+- config/routes.rb (engine mount—added by generator)
+- app/javascript/controllers/application.js (Stimulus registration)
+- app/views/pages/*.html.erb (usage examples)
+
+**Reference Implementation:**
+- mrdbid project at `/Users/wrj/Documents/www/public_html/mrdbid`
+- Uses gem correctly in production
+- See PROJECT_CONTEXT.md for complete details
+
 **Remember: These standards exist because we've already paid the cost of learning these lessons. Don't make us pay again.**

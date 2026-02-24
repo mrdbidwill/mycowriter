@@ -38,6 +38,9 @@ gem "dotenv-rails"
 # Rate limiting for API endpoints
 gem "rack-attack"
 
+# Mycowriter gem - Genus/species autocomplete (created by mrdbid)
+gem "mycowriter", path: "/Users/wrj/Documents/www/public_html/mycowriter_gem/mycowriter"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

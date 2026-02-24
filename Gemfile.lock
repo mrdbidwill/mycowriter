@@ -1,3 +1,9 @@
+PATH
+  remote: ../mycowriter_gem/mycowriter
+  specs:
+    mycowriter (0.1.11)
+      rails (>= 7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -445,6 +451,7 @@ DEPENDENCIES
   jbuilder
   kamal
   minitest (~> 5.25)
+  mycowriter!
   mysql2 (~> 0.5)
   obscenity
   propshaft

@@ -19,7 +19,10 @@ default: &default
 
 development:
   <<: *default
-  database: mycowriter_development
+  # Shared database with mrdbid for access to genera/species tables
+  # Both apps run on same VPS (85.31.233.192)
+  # Sharing taxonomic data (mb_lists, genera, species) ensures consistency
+  database: mrdbid_development
   host: 127.0.0.1
 
 # Warning: The database defined as "test" will be erased and
