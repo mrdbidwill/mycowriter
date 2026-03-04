@@ -1,113 +1,119 @@
-# MycoWriter - Mushroom Article Creator
+# Mycowriter
 
-A Rails 8 application for creating and managing articles about mushrooms. Users can sign in, create their own articles with sections and paragraphs, and view articles created by other users.
+Mycowriter is a standalone Ruby gem (Rails engine) that provides intelligent, inline autocomplete for fungal genus and species names using MycoBank data.
 
 ## Features
 
-- **User Authentication**: Secure sign-up and sign-in using Devise
-- **Article Management**: Create, edit, and delete your own articles
-- **Public Access**: All users can view all articles
-- **Authorization**: Only article owners can edit or delete their articles
-- **Sections & Paragraphs**: Organize articles with draggable sections and paragraphs
-- **Clean UI**: Responsive design with Tailwind CSS and sidebar navigation
+- Inline autocomplete in textareas at the cursor position
+- Two-stage genus then species suggestions
+- Debounced search for responsive typing
+- Configurable minimum characters, uppercase enforcement, and result limits
+- Engine-mounted JSON endpoints for autocomplete
 
-## Prerequisites
+## Requirements
 
-- Ruby 3.4.3 or higher
-- Rails 8.0.4 or higher
-- MySQL 5.6.4 or higher
-- Node.js (for JavaScript runtime)
-- Bundler
+- Ruby 3.2 or higher
+- Rails 7.0 or higher
 
 ## Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd mycowriter
-   ```
+1. Add the gem to your Gemfile:
 
-2. **Install dependencies**
-   ```bash
-   bundle install
-   ```
+```ruby
+gem "mycowriter", "~> 0.1.11"
+```
 
-3. **Configure database**
-   
-   Copy `.env.example` to `.env` and set your MySQL credentials:
-   ```
-   MYSQL_USER=your_mysql_username
-   MYSQL_PASSWORD=your_mysql_password
-   DB_HOST=127.0.0.1
-   ```
+2. Install and run the generator:
 
-4. **Create and migrate database**
-   ```bash
-   bin/rails db:create
-   bin/rails db:migrate
-   ```
+```bash
+bundle install
+rails generate mycowriter:install
+```
 
-5. **Start the server**
-   ```bash
-   bin/rails server
-   ```
+The installer will:
 
-6. **Access the application**
-   
-   Open your browser to http://localhost:3000
+- Create `config/initializers/mycowriter.rb`
+- Mount the engine at `/mycowriter`
+- Copy the Stimulus controller to `app/javascript/controllers/inline_autocomplete_controller.js`
+
+Restart your Rails server after installation.
+
+## Database setup
+
+Mycowriter supports two data sources:
+
+1. Existing `Genus` and `Species` models in your app (preferred)
+2. An `mb_lists` table populated with MycoBank data
+
+To generate the optional `mb_lists` table:
+
+```bash
+rails generate mycowriter:mb_lists_migration
+rails db:migrate
+```
+
+Minimum columns: `id`, `taxon_name`. Optional: `rank_name`, `name_status`.
+
+### MycoBank data and attribution
+
+MycoBank data is licensed under Creative Commons CC BY-NC-ND and requires attribution:
+
+```
+MBList taxonomic data provided by MycoBank (www.mycobank.org)
+```
 
 ## Usage
 
-### For Users
+Add the controller to any textarea where you want inline autocomplete:
 
-1. **Sign Up**: Create an account with email, password, and display name
-2. **Create Articles**: Add new articles with title and description
-3. **Add Content**: Organize your articles with sections and paragraphs
-4. **View All Articles**: Browse articles created by all users
-5. **My Articles**: Quick access to your own articles
+```erb
+<div data-controller="inline-autocomplete"
+     data-inline-autocomplete-genus-url-value="<%= mycowriter.genera_autocomplete_path %>"
+     data-inline-autocomplete-species-url-value="<%= mycowriter.species_autocomplete_path %>"
+     data-inline-autocomplete-min-value="4">
 
-### Authorization Rules
+  <%= f.text_area :body,
+      data: {
+        inline_autocomplete_target: "textarea",
+        action: "input->inline-autocomplete#onInput keydown->inline-autocomplete#onKeydown"
+      },
+      class: "form-textarea" %>
 
-- **Anyone** can view all articles
-- **Logged-in users** can create new articles
-- **Article owners** can edit and delete their own articles
-- **Non-owners** cannot modify articles they didn't create
-
-## Technology Stack
-
-- **Framework**: Ruby on Rails 8.0.4
-- **Ruby Version**: 3.4.3
-- **Database**: MySQL
-- **Authentication**: Devise
-- **Authorization**: Pundit
-- **Frontend**: Tailwind CSS, Hotwire (Turbo & Stimulus)
-- **Testing**: Minitest
-
-## Development
-
-### Running Tests
-
-```bash
-bin/rails test
+  <div data-inline-autocomplete-target="dropdown" class="hidden"></div>
+</div>
 ```
 
-### Code Standards
+The controller inserts the selected name at the cursor position. Customize formatting in your app as needed.
 
-This project follows the Rails 8 / Turbo standard pattern from the mrdbid project. See `CODING_STANDARDS.md` and `RAILS_8_TURBO_STANDARD_PATTERN.md` for details.
+## Configuration
 
-**Key Standards:**
-- Never use `respond_to` blocks with `turbo_stream.action(:redirect)` 
-- Always use simple `redirect_to` with `notice:` or `alert:` parameter
-- All redirects use `status: :see_other` for non-GET requests
+Edit `config/initializers/mycowriter.rb`:
+
+```ruby
+Mycowriter.configure do |config|
+  config.min_characters = 4
+  config.require_uppercase = true
+  config.results_limit = 20
+end
+
+Rails.application.config.to_prepare do
+  Mycowriter::AutocompleteController.class_eval do
+    skip_after_action :verify_authorized, raise: false
+    skip_after_action :verify_policy_scoped, raise: false
+    skip_before_action :authenticate_user!, raise: false if respond_to?(:authenticate_user!)
+  end
+end
+```
+
+## Routes
+
+The gem provides:
+
+```
+GET /mycowriter/autocomplete/genera
+GET /mycowriter/autocomplete/species
+```
 
 ## License
 
-This project is open source and available under the MIT License.
-
-## Contact
-
-For questions or issues, please open an issue on GitHub.
-
----
-
-**Note**: This is a demonstration project. Always verify mushroom identifications with expert mycologists before consumption.
+The gem is available under the MIT License.
