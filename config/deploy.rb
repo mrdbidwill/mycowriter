@@ -29,9 +29,6 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # Keep last 5 releases
 set :keep_releases, 5
 
-# Run migrations on deploy
-after "deploy:updated", "deploy:migrate"
-
 # Use systemd to restart Puma instead of capistrano-puma's restart
 after "deploy:published", "systemd_puma:restart"
 

@@ -24,4 +24,4 @@ Purpose: continuity log for monetization planning when direct repo access is una
 - `public/ads.txt` placeholder added; must be replaced with live publisher record before approval.
 - Remaining ops items: privacy/cookie disclosure review, CSP review if enforcing.
 - Removed unused user/admin stack (Devise/Pundit, articles/sections/paragraphs, API keys) to keep site demo-only.
-- Migration added to drop unused auth/article tables and schema updated.
+- Database remains shared with MRDBID; no destructive migrations in mycowriter.

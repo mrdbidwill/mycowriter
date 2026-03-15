@@ -105,7 +105,7 @@ Implemented in repo:
 - `public/ads.txt` placeholder added (replace with actual publisher record).
 - Tests added for gating behavior.
 - Removed unused user/admin feature stack (Devise/Pundit, articles/sections/paragraphs, API keys) to keep the app demo-only.
-- Migration added to drop unused auth/article tables; schema updated accordingly.
+- Database remains shared with MRDBID; do not run destructive migrations here.
 
 Remaining items:
 - Replace `public/ads.txt` with the live AdSense publisher line once approved.
