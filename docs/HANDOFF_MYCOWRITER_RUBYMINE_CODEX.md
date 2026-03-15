@@ -106,6 +106,7 @@ Implemented in repo:
 - Tests added for gating behavior.
 - Removed unused user/admin feature stack (Devise/Pundit, articles/sections/paragraphs, API keys) to keep the app demo-only.
 - Database remains shared with MRDBID; do not run destructive migrations here.
+- Production uses the shared MRDBID database; per-app mycowriter_* databases are intentionally unused and can be dropped.
 
 Remaining items:
 - Replace `public/ads.txt` with the live AdSense publisher line once approved.

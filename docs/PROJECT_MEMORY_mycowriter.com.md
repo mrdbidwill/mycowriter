@@ -25,3 +25,4 @@ Purpose: continuity log for monetization planning when direct repo access is una
 - Remaining ops items: privacy/cookie disclosure review, CSP review if enforcing.
 - Removed unused user/admin stack (Devise/Pundit, articles/sections/paragraphs, API keys) to keep site demo-only.
 - Database remains shared with MRDBID; no destructive migrations in mycowriter.
+- Mycowriter production uses the shared MRDBID database; per-app mycowriter_* databases are intentionally unused and may be dropped.
