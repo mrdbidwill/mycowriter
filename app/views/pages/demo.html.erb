@@ -66,6 +66,8 @@
     </div>
   </div>
 
+  <%= render "shared/adsense_inline" %>
+
   <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
     <h2 class="text-2xl font-semibold mb-4">How to Integrate Into Your Rails App</h2>
 
@@ -136,8 +138,8 @@ rails generate mycowriter:install</code></pre>
       </div>
 
       <div class="border-l-4 border-red-500 pl-4">
-        <h3 class="text-lg font-semibold mb-2">🔒 Authentication Ready</h3>
-        <p class="text-gray-700">Integrates seamlessly with Devise and Pundit authorization</p>
+        <h3 class="text-lg font-semibold mb-2">🔒 App-Ready</h3>
+        <p class="text-gray-700">Integrates cleanly with Rails apps that add authentication later</p>
       </div>
 
       <div class="border-l-4 border-indigo-500 pl-4">
@@ -166,4 +168,10 @@ rails generate mycowriter:install</code></pre>
       </a>
     </div>
   </div>
+
+  <div class="text-center text-sm text-gray-500 mt-8">
+    <a href="/privacy" class="text-blue-600 hover:text-blue-800">Privacy Policy</a>
+  </div>
+
+  <%= render "shared/adsense_footer" %>
 </div>

@@ -6,29 +6,10 @@ class Rack::Attack
 
   ### Throttle API Requests ###
 
-  # Throttle all API requests by API key
-  # 100 requests per hour per API key
-  throttle("api/key", limit: 100, period: 1.hour) do |req|
-    if req.path.start_with?("/api/v1")
-      # Extract API key from Authorization header
-      auth_header = req.env["HTTP_AUTHORIZATION"]
-      if auth_header.present?
-        token = auth_header.start_with?("Bearer ") ? auth_header.sub("Bearer ", "") : auth_header
-        "api_key:#{token}"
-      end
-    end
-  end
-
-  # Throttle API requests by IP for requests without valid API key
-  # 20 requests per hour per IP
-  throttle("api/ip", limit: 20, period: 1.hour) do |req|
-    if req.path.start_with?("/api/v1")
-      # Only apply IP-based throttling if no valid API key is provided
-      auth_header = req.env["HTTP_AUTHORIZATION"]
-      if auth_header.blank?
-        req.ip
-      end
-    end
+  # Throttle API requests by IP
+  # 100 requests per hour per IP
+  throttle("api/ip", limit: 100, period: 1.hour) do |req|
+    req.ip if req.path.start_with?("/api/v1")
   end
 
   ### Custom Throttle Response ###
@@ -48,16 +29,5 @@ class Rack::Attack
     [ 429, headers, [ { error: "Rate limit exceeded. Try again later." }.to_json ] ]
   end
 
-  ### Track requests for rate limit headers ###
-
-  # Store tracking data in request env for controllers to access
-  Rack::Attack.track("api_requests") do |req|
-    if req.path.start_with?("/api/v1")
-      auth_header = req.env["HTTP_AUTHORIZATION"]
-      if auth_header.present?
-        token = auth_header.start_with?("Bearer ") ? auth_header.sub("Bearer ", "") : auth_header
-        "api_key:#{token}"
-      end
-    end
-  end
+  ### Tracking is handled by Rack::Attack ###
 end

@@ -1,0 +1,8 @@
+<% if adsense_allowed_for_request? && Rails.configuration.x.adsense.slots.footer.present? %>
+  <div class="my-12">
+    <%= adsense_slot_tag(slot: Rails.configuration.x.adsense.slots.footer) %>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+<% end %>

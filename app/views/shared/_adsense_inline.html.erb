@@ -1,0 +1,8 @@
+<% if adsense_allowed_for_request? && Rails.configuration.x.adsense.slots.inline.present? %>
+  <div class="my-10">
+    <%= adsense_slot_tag(slot: Rails.configuration.x.adsense.slots.inline) %>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+<% end %>

@@ -26,5 +26,14 @@ module Mycowriter
 
     # Enable Rack::Attack for rate limiting
     config.middleware.use Rack::Attack
+
+    # AdSense configuration (flag-driven, public-only).
+    config.x.adsense.enabled = ActiveModel::Type::Boolean.new.cast(
+      ENV.fetch("ADSENSE_ENABLED", "false")
+    )
+    config.x.adsense.client_id = ENV["ADSENSE_CLIENT_ID"]
+    config.x.adsense.slots = ActiveSupport::OrderedOptions.new
+    config.x.adsense.slots.inline = ENV["ADSENSE_SLOT_INLINE"]
+    config.x.adsense.slots.footer = ENV["ADSENSE_SLOT_FOOTER"]
   end
 end

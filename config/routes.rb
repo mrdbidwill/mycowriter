@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   # Demo and documentation pages
   get "demo", to: "pages#demo"
   get "docs", to: "pages#gem_docs"
+  get "privacy", to: "pages#privacy"
+  post "privacy/opt_out", to: "pages#opt_out"
+  post "privacy/opt_in", to: "pages#opt_in"
 
   # Root redirects to demo
   root "pages#demo"

@@ -22,15 +22,7 @@ gem "jbuilder"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
-# Authentication and Authorization
-gem "devise"  # Authentication
-gem "pundit"  # Authorization
-
-# List ordering and resequencing
-gem "acts_as_list"  # Reordering for sections and paragraphs
-
-# Content moderation
-gem "obscenity"  # Profanity filtering
+# Demo site intentionally has no user accounts or admin features.
 
 # Load environment variables from .env file
 gem "dotenv-rails"
