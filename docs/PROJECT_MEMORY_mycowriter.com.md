@@ -26,3 +26,10 @@ Purpose: continuity log for monetization planning when direct repo access is una
 - Removed unused user/admin stack (Devise/Pundit, articles/sections/paragraphs, API keys) to keep site demo-only.
 - Database remains shared with MRDBID; no destructive migrations in mycowriter.
 - Mycowriter production uses the shared MRDBID database; per-app mycowriter_* databases are intentionally unused and may be dropped.
+
+## 2026-03-30
+- Shared-host runtime defaults applied:
+  - `config/puma.rb` now enforces integer parsing for thread count.
+  - `config/puma.rb` now stays single-process by default; workers enable only when `WEB_CONCURRENCY>1`.
+  - `config/deploy.yml` now sets baseline `RAILS_MAX_THREADS: 3` and `WEB_CONCURRENCY: 1`.
+- Intent: keep predictable low resource usage for mycowriter traffic while preserving off-peak headroom for heavy PDF rebuild pipeline on shared VPS.
