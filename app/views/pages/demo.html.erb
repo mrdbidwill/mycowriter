@@ -1,13 +1,15 @@
 <div class="max-w-5xl mx-auto py-8 px-4">
   <div class="mb-8">
-    <h1 class="text-4xl font-bold mb-2">Mycowriter Demo</h1>
-    <p class="text-lg text-gray-600">Interactive autocomplete for fungal genus and species names</p>
+    <h1 class="text-4xl font-bold mb-2">Mycowriter</h1>
+    <p class="text-lg text-gray-600">A Rails Gem for Interactive autocomplete for fungal genus and species names.</p>
   </div>
 
   <div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
     <p class="text-base">
       <strong>How to use:</strong> Type a genus name starting with a capital letter (4+ characters). Click your selection from the dropdown. Continue typing the species name to get species suggestions for that genus. The complete binomial will be inserted at your cursor position.
     </p>
+    <p class="text-base">Note: You have to keep typing all the way to "Agaricu" to narrow down the match for something like 'Agaricus', since there are several matches for "Agaric". Many instances like this are the reason Mycowriter exists.</p>
+
   </div>
 
   <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
