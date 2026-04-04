@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+.content-area {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .content-area {
+    width: 75%;
+    max-width: 75%;
+  }
+}
