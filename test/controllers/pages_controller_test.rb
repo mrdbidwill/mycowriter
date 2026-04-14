@@ -31,6 +31,13 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_includes @response.body, "pagead/js/adsbygoogle.js"
   end
 
+  test "demo page includes auto ads bootstrap when anonymous" do
+    get demo_url
+    assert_response :success
+    assert_includes @response.body, "pagead/js/adsbygoogle.js"
+    assert_includes @response.body, "enable_page_level_ads: true"
+  end
+
   test "demo page excludes adsense when signed in" do
     with_adsense_authenticated(true) do
       get demo_url

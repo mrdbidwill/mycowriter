@@ -29,7 +29,7 @@ module Mycowriter
 
     # AdSense configuration (flag-driven, public-only).
     config.x.adsense.enabled = ActiveModel::Type::Boolean.new.cast(
-      ENV.fetch("ADSENSE_ENABLED", "false")
+      ENV.fetch("ADSENSE_ENABLED", Rails.env.production? ? "true" : "false")
     )
     config.x.adsense.client_id = ENV.fetch("ADSENSE_CLIENT_ID", "ca-pub-8323362126637830")
     config.x.adsense.slots = ActiveSupport::OrderedOptions.new

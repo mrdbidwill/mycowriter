@@ -53,6 +53,14 @@ class AdsenseHelperTest < ActionView::TestCase
     end
   end
 
+  test "adsense auto ads tag renders when allowed" do
+    with_adsense_context(authenticated: false, opted_out: false) do
+      html = adsense_auto_ads_tag
+      assert_includes html, "enable_page_level_ads: true"
+      assert_includes html, "google_ad_client: 'ca-pub-123'"
+    end
+  end
+
   test "adsense slot tag does not render without slot" do
     with_adsense_context(authenticated: false, opted_out: false) do
       html = adsense_slot_tag(slot: nil)

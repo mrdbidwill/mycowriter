@@ -18,6 +18,14 @@ module AdsenseHelper
     )
   end
 
+  def adsense_auto_ads_tag
+    return unless adsense_allowed_for_request?
+
+    javascript_tag(
+      "(adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: '#{Rails.configuration.x.adsense.client_id}', enable_page_level_ads: true });"
+    )
+  end
+
   def adsense_slot_tag(slot:, format: "auto")
     return unless adsense_allowed_for_request?
     return if slot.blank?
