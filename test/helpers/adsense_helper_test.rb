@@ -8,10 +8,11 @@ class AdsenseHelperTest < ActionView::TestCase
     Rails.configuration.x.adsense.slots.inline = "111"
   end
 
-  def with_adsense_context(authenticated: false, opted_out: false)
+  def with_adsense_context(authenticated: false, opted_out: false, content_page: true)
     controller_double = Object.new
     controller_double.define_singleton_method(:adsense_authenticated?) { authenticated }
     controller_double.define_singleton_method(:adsense_opted_out?) { opted_out }
+    controller_double.define_singleton_method(:adsense_content_page?) { content_page }
     original = method(:controller) if respond_to?(:controller)
     define_singleton_method(:controller) { controller_double }
     yield
@@ -46,18 +47,16 @@ class AdsenseHelperTest < ActionView::TestCase
     end
   end
 
+  test "adsense blocked on non-content pages" do
+    with_adsense_context(authenticated: false, opted_out: false, content_page: false) do
+      assert_not adsense_allowed_for_request?
+    end
+  end
+
   test "adsense script tag renders when allowed" do
     with_adsense_context(authenticated: false, opted_out: false) do
       html = adsense_script_tag
       assert_includes html, "pagead/js/adsbygoogle.js"
-    end
-  end
-
-  test "adsense auto ads tag renders when allowed" do
-    with_adsense_context(authenticated: false, opted_out: false) do
-      html = adsense_auto_ads_tag
-      assert_includes html, "enable_page_level_ads: true"
-      assert_includes html, "google_ad_client: 'ca-pub-123'"
     end
   end
 

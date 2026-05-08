@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   before_action :apply_global_privacy_signals
+  ADSENSE_CONTENT_ACTIONS = {
+    "pages" => %w[gem_docs]
+  }.freeze
 
   private
 
@@ -27,5 +30,12 @@ class ApplicationController < ActionController::Base
 
   def adsense_opted_out?
     cookies[:adsense_opt_out].to_s == "true" || request.headers["Sec-GPC"] == "1"
+  end
+
+  def adsense_content_page?
+    return false unless request.get?
+    return false unless request.format.html?
+
+    ADSENSE_CONTENT_ACTIONS.fetch(controller_name, []).include?(action_name)
   end
 end

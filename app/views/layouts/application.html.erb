@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <% if content_for?(:meta_robots) %>
+      <meta name="robots" content="<%= yield :meta_robots %>">
+    <% end %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -21,7 +24,6 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= adsense_script_tag %>
-    <%= adsense_auto_ads_tag %>
   </head>
 
   <body>

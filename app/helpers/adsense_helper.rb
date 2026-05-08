@@ -5,7 +5,10 @@ module AdsenseHelper
   end
 
   def adsense_allowed_for_request?
-    adsense_enabled? && !adsense_authenticated_request? && !adsense_opted_out_request?
+    adsense_enabled? &&
+      adsense_content_eligible_request? &&
+      !adsense_authenticated_request? &&
+      !adsense_opted_out_request?
   end
 
   def adsense_script_tag
@@ -15,14 +18,6 @@ module AdsenseHelper
       async: true,
       src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=#{Rails.configuration.x.adsense.client_id}",
       crossorigin: "anonymous"
-    )
-  end
-
-  def adsense_auto_ads_tag
-    return unless adsense_allowed_for_request?
-
-    javascript_tag(
-      "(adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: '#{Rails.configuration.x.adsense.client_id}', enable_page_level_ads: true });"
     )
   end
 
@@ -56,5 +51,13 @@ module AdsenseHelper
     end
 
     false
+  end
+
+  def adsense_content_eligible_request?
+    if respond_to?(:controller) && controller&.respond_to?(:adsense_content_page?, true)
+      return controller.send(:adsense_content_page?)
+    end
+
+    true
   end
 end
